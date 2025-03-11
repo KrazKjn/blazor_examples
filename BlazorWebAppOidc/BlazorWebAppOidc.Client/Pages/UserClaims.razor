@@ -1,0 +1,86 @@
+@page "/user-claims"
+@using System.Security.Claims
+@using BlazorWebAppOidc.Client.UserClaims
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@implements IDisposable
+@inject PersistentComponentState ApplicationState
+
+<PageTitle>User Claims</PageTitle>
+
+<h1>User Claims</h1>
+
+@if (claims.Any())
+{
+    @if (string.IsNullOrEmpty(UserEmail))
+    {
+        UserEmail = userClaims.First(p => p.Type == "email")?.Value ?? "No email available.";
+    }
+    @if (isAdministrator)
+    {
+        <p><strong>Administrator</strong></p>
+    }
+    <p>Email: @UserEmail</p>
+    <ul>
+        @foreach (var userClaim in userClaims)
+        {
+            <li><b>@userClaim.Type:</b> @userClaim.Value</li>
+        }
+    </ul>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@code {
+    private IEnumerable<Claim> claims = [];
+    private IEnumerable<UserClaim> userClaims = [];
+    private IEnumerable<string> userRoles;
+    private string UserEmail = string.Empty;
+    private bool isAdministrator = false;
+    private PersistingComponentStateSubscription persistingSubscription;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        persistingSubscription = ApplicationState.RegisterOnPersisting(PersistData);
+
+        if (AuthState == null)
+        {
+            return;
+        }
+
+        var authState = await AuthState;
+        var user = authState.User;
+
+        claims = user.Claims;
+        isAdministrator = user.IsInRole("Administrator");
+        userClaims = claims.Select(p => new UserClaim { Type = p.Type, Value = p.Value });
+
+        // Extract roles from the claims
+        userRoles = claims.Where(c => c.Type == "roles") // The claim type for roles
+            .Select(c => c.Value);
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            // Retrieve the email claim
+            UserEmail = user.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? string.Empty;
+        }
+        else
+        {
+            UserEmail = "User is not authenticated.";
+        }
+    }
+
+    private Task PersistData()
+    {
+        ApplicationState.PersistAsJson(nameof(userClaims), userClaims);
+
+        return Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose() => persistingSubscription.Dispose();
+}
