@@ -1,0 +1,31 @@
+@page "/myrecommendations"
+
+@inject HttpClient Http
+
+<div class="container">
+    <h2>What People Say About Me</h2>
+
+    @if (Recommendations == null)
+    {
+        <p>Loading recommendations...</p>
+    }
+    else
+    {
+        @foreach (var recommendation in Recommendations)
+        {
+            <blockquote>
+                <p>"@recommendation.TextBody"</p>
+                <footer>- @recommendation.Author</footer>
+            </blockquote>
+        }
+    }
+</div>
+@code {
+    private List<Recommendation>? Recommendations;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetStringAsync("data/recommendations.json");
+        Recommendations = System.Text.Json.JsonSerializer.Deserialize<List<Recommendation>>(response);
+    }
+}

@@ -1,0 +1,64 @@
+Publishing a Blazor app to GitHub requires a combination of preparing your Blazor application for production and utilizing GitHub Pages to host it. Here's a step-by-step guide to help you deploy your Blazor app to GitHub:
+
+1. Prepare Your Blazor App
+Ensure your Blazor app is ready for deployment:
+
+Open your Blazor project in Visual Studio or your preferred editor.
+
+Set the base tag in the wwwroot/index.html (for Blazor WebAssembly) or wwwroot/_Host.cshtml (for Blazor Server). Update it for GitHub Pages:
+
+html
+<base href="/my-personal-blazor-website/" />
+Replace / with /<repository-name>/ (e.g., /my-blazor-app/) if you're deploying to a repository with its own name.
+
+2. Add an empty file named .nojekyllto the root of wwwroot
+This instructs GitHub to serve up the requested _framework files.
+
+3. Publish the Application
+Build the app in Release mode to produce the production-ready files.
+
+Use the following command in the terminal if you are working with the .NET CLI:
+
+bash
+dotnet publish -c Release
+For Blazor WebAssembly, the output will be in the bin/Release/net7.0/publish/wwwroot folder (depending on your .NET version).
+
+4. Create a GitHub Repository
+Go to GitHub and create a new repository.
+
+Clone the repository to your local machine if you haven’t already:
+
+bash
+git clone https://github.com/<username>/<repository-name>.git
+cd <repository-name>
+
+5. Copy Files to the Repository
+Copy the contents of the wwwroot folder (from the publish output) into the cloned repository folder.
+
+6. Commit and Push to GitHub
+Add the files to the GitHub repository:
+
+bash
+git add .
+git commit -m "Deploy Blazor app"
+git push origin main
+
+7. Configure GitHub Pages
+Go to your repository on GitHub.
+
+Click on Settings > Pages (usually under the "Code and Automation" section).
+
+In the Source dropdown, select the branch (main or other) and directory (usually root).
+
+Save the settings. GitHub Pages will now host your Blazor app.
+
+8. Access Your Deployed App
+The URL for your app will typically look like this:
+
+https://<username>.github.io/<repository-name>/
+Example: https://markhogan.github.io/my-blazor-app/
+
+Additional Notes
+If your app doesn't display correctly, double-check the <base> tag in your Blazor app, as it must match the GitHub Pages URL path.
+
+For automatic deployment, consider using GitHub Actions to automate the build and deployment process on every commit.

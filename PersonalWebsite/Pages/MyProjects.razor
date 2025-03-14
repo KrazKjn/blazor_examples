@@ -1,0 +1,54 @@
+@page "/myprojects"
+
+@inject HttpClient Http
+
+<div class="container">
+
+    <h2>My Projects</h2>
+
+    @if (Projects == null)
+    {
+        <p>Loading projects...</p>
+    }
+    else
+    {
+        @foreach (var project in Projects)
+        {
+            <div>
+                <h3>@project.Name</h3>
+                @if (project.Description.StartsWith("<li>"))
+                {
+                    <ul>
+                        @foreach (var item in project.Description.Split("</li>", StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <li>@item.Split('>')[1]</li>
+                        }
+                    </ul>
+                }
+                else if (project.Description.StartsWith("<p>"))
+                {
+                    @foreach (var item in project.Description.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <p>@item.Split('>')[1]</p>
+                    }
+                }
+                else
+                {
+                    <p>@project.Description</p>
+                }   
+                <a href="@project.Link" target="_blank">View Project</a>
+            </div>
+            <br />
+        }
+    }
+</div>
+
+@code {
+    private List<Project>? Projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetStringAsync("data/projects.json");
+        Projects = System.Text.Json.JsonSerializer.Deserialize<List<Project>>(response);
+    }
+}
