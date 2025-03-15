@@ -13,8 +13,12 @@
     {
         @foreach (var post in BlogPosts)
         {
-            <div>
-                <h3>@post.Title</h3>
+            <h3>@post.Title</h3>
+            <div class="recommendation@(isOdd ? " reverse" : "")">
+                @if (!string.IsNullOrWhiteSpace(post.ImageUrl))
+                {
+                    <img src="@post.ImageUrl" class="rounded-3" style="float: left; margin-right: 10px; width: 200px; height: 150px;" />
+                }
                 @if (post.Summary.StartsWith("<li>"))
                 {
                     <ul>
@@ -38,12 +42,14 @@
                 <a href="@post.Link" target="_blank">Read More</a>
             </div>
             <br />
+            isOdd = !isOdd;
         }
     }
 </div>
 
 @code {
     private List<BlogPost>? BlogPosts;
+    bool isOdd = false;
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,6 +1,7 @@
 @page "/myrecommendations"
 
 @inject HttpClient Http
+@inject IJSRuntime JS
 
 <div class="container">
     <h2>What People Say About Me</h2>
@@ -11,17 +12,28 @@
     }
     else
     {
+        <div class="recommendations">
         @foreach (var recommendation in Recommendations)
         {
-            <blockquote>
-                <p>"@recommendation.TextBody"</p>
-                <footer>- @recommendation.Author</footer>
-            </blockquote>
+            <div class="recommendation@(isOdd ? " reverse" : "")">
+                <img src="@recommendation.ImageUrl" alt="@recommendation.Author" class="rounded-circle" style="float: left; margin-right: 10px; width: 150px; height: 150px;" />
+                <blockquote>
+                    <p>"@recommendation.TextBody"</p>
+                    <footer>
+                        <a href="@recommendation.Link" target="_blank" rel="noopener noreferrer">
+                            - @recommendation.Author
+                        </a>
+                    </footer>
+                </blockquote>
+            </div>
+            isOdd = !isOdd;
         }
+        </div>
     }
 </div>
 @code {
     private List<Recommendation>? Recommendations;
+    bool isOdd = false;
 
     protected override async Task OnInitializedAsync()
     {

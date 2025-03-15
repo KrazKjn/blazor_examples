@@ -17,16 +17,22 @@ public class Project
     public string Link { get; set; }
 
     /// <summary>
+    /// Image URL for the recommendation
+    /// </summary>
+    public string ImageUrl { get; set; }
+
+    /// <summary>
     /// Constructor for Project
     /// </summary>
     /// <param name="name"></param>
     /// <param name="description"></param>
     /// <param name="link"></param>
-    public Project(string name, string description, string link)
+    public Project(string name, string description, string link, string imageUrl)
     {
         Name = name;
         Description = description;
         Link = link;
+        ImageUrl = imageUrl;
     }
 
     /// <summary>
@@ -37,5 +43,6 @@ public class Project
         Name = "";
         Description = "";
         Link = "";
+        ImageUrl = "";
     }
 }

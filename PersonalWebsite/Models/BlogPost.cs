@@ -17,16 +17,23 @@ public class BlogPost
     public string Link { get; set; }
 
     /// <summary>
+    /// Image URL for the recommendation
+    /// </summary>
+    public string ImageUrl { get; set; }
+
+    /// <summary>
     /// Constructor for BlogPost
     /// </summary>
     /// <param name="title"></param>
     /// <param name="summary"></param>
     /// <param name="link"></param>
-    public BlogPost(string title, string summary, string link)
+    /// <param name="imageUrl"></param>
+    public BlogPost(string title, string summary, string link, string imageUrl)
     {
         Title = title;
         Summary = summary;
         Link = link;
+        ImageUrl = imageUrl;
     }
 
     /// <summary>
@@ -37,5 +44,6 @@ public class BlogPost
         Title = "";
         Summary = "";
         Link = "";
+        ImageUrl = "";
     }
 }
