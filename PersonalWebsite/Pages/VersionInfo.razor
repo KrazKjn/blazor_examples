@@ -1,0 +1,11 @@
+@code {
+    private string? version;
+
+    protected override void OnInitialized()
+    {
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        version = assembly.GetName().Version?.ToString() ?? "Unknown Version";
+    }
+}
+
+<p>App Version: @version</p>
