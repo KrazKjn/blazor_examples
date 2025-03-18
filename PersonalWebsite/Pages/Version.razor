@@ -1,8 +1,31 @@
 @page "/version"
 
+@inject IJSRuntime JSRuntime
+
 <PageTitle>Web Site Version</PageTitle>
 
 <div class="container">
     <h1>Web Site Version</h1>
     <VersionInfo />
+    <p>.NET Version: @DotNetVersion</p>
+    <p>Blazor Version: @BlazorVersion</p>
+    <p>Bootstrap version: @BootstrapVersion</p>
 </div>
+
+@code {
+    private string BootstrapVersion = "Detecting...";
+    private string DotNetVersion = "Detecting...";
+    private string BlazorVersion = "Detecting...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        BootstrapVersion = await JSRuntime.InvokeAsync<string>("getBootstrapVersion");
+        DotNetVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+        var assembly = typeof(Microsoft.AspNetCore.Components.ComponentBase).Assembly;
+        // Retrieve the custom attribute in a compatible way
+        var attribute = assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+                                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+
+        BlazorVersion = attribute?.InformationalVersion.Split('+')[0] ?? "Version not found";
+    }
+}

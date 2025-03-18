@@ -1,6 +1,7 @@
 @page "/myblogs"
 
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <div class="container">
     <h2>Blog</h2>
@@ -15,10 +16,14 @@
         {
             <h3>@post.Title</h3>
             <div class="recommendation@(isOdd ? " reverse" : "")">
-                @if (!string.IsNullOrWhiteSpace(post.ImageUrl))
-                {
-                    <img src="@post.ImageUrl" class="rounded-3" style="float: left; margin-right: 10px; width: 200px; height: 150px;" />
-                }
+                @* // isMobile *@
+                <div style="float: @(isOdd ? "left" : "right");">
+                    @if (!string.IsNullOrWhiteSpace(post.ImageUrl))
+                    {
+                        <img src="@post.ImageUrl" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
+                    }
+                    <a href="@post.Link" target="_blank" class="link-@(isOdd ? "left" : "right")">Read More</a>
+                </div>
                 @if (post.Summary.StartsWith("<li>"))
                 {
                     <ul>
@@ -39,7 +44,6 @@
                 {
                     <p>@post.Summary</p>
                 }   
-                <a href="@post.Link" target="_blank">Read More</a>
             </div>
             <br />
             isOdd = !isOdd;
@@ -50,10 +54,13 @@
 @code {
     private List<BlogPost>? BlogPosts;
     bool isOdd = false;
+    private int windowWidth;
+    private bool isMobile => windowWidth <= 768;
 
     protected override async Task OnInitializedAsync()
     {
         var response = await Http.GetStringAsync("data/blogposts.json");
         BlogPosts = System.Text.Json.JsonSerializer.Deserialize<List<BlogPost>>(response);
+        windowWidth = await JSRuntime.InvokeAsync<int>("getWindowWidth");
     }
 }

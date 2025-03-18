@@ -16,11 +16,11 @@
         @foreach (var recommendation in Recommendations)
         {
             <div class="recommendation@(isOdd ? " reverse" : "")">
-                <img src="@recommendation.ImageUrl" alt="@recommendation.Author" class="rounded-circle" style="float: left; margin-right: 10px; width: 150px; height: 150px;" />
+                <img src="@recommendation.ImageUrl" alt="@recommendation.Author" class="rounded-circle image-url-@(isOdd ? "left" : "right")" />
                 <blockquote>
                     <p>"@recommendation.TextBody"</p>
                     <footer>
-                        <a href="@recommendation.Link" target="_blank" rel="noopener noreferrer">
+                        <a href="@recommendation.Link" target="_blank" rel="noopener noreferrer" class="link-@(isOdd ? "left" : "right")">
                             - @recommendation.Author
                         </a>
                     </footer>

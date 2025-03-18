@@ -16,10 +16,13 @@
         {
             <h3>@project.Name</h3>
             <div class="recommendation@(isOdd ? " reverse" : "")">
-                @if (!string.IsNullOrWhiteSpace(project.ImageUrl))
-                {
-                    <img src="@project.ImageUrl" class="rounded-3" style="float: left; margin-right: 10px; width: 200px; height: 150px;" />
-                }
+                <div style="float: @(isOdd ? "left" : "right");">
+                    @if (!string.IsNullOrWhiteSpace(project.ImageUrl))
+                    {
+                        <img src="@project.ImageUrl" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
+                    }
+                    <a href="@project.Link" target="_blank" class="link-@(isOdd ? "left" : "right")">View Project</a>
+                </div>
                 @if (project.Description.StartsWith("<li>"))
                 {
                     <ul>
@@ -40,7 +43,6 @@
                 {
                     <p>@project.Description</p>
                 }   
-                <a href="@project.Link" target="_blank">View Project</a>
             </div>
             <br />
             isOdd = !isOdd;
