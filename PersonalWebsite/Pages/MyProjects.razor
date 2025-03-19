@@ -1,27 +1,29 @@
 @page "/myprojects"
 
-@inject HttpClient Http
+@inherits BaseDataPage<Project>
+
+<PageTitle>Mark J. Hogan - My Projects</PageTitle>
 
 <div class="container">
 
     <h2>My Projects</h2>
 
-    @if (Projects == null)
+    @if (Items == null)
     {
         <p>Loading projects...</p>
     }
     else
     {
-        @foreach (var project in Projects)
+        @foreach (var project in Items)
         {
             <h3>@project.Name</h3>
             <div class="recommendation@(isOdd ? " reverse" : "")">
-                <div style="float: @(isOdd ? "left" : "right");">
+                <div class="image-container-@(isOdd ? "left" : "right")">
                     @if (!string.IsNullOrWhiteSpace(project.ImageUrl))
                     {
                         <img src="@project.ImageUrl" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
                     }
-                    <a href="@project.Link" target="_blank" class="link-@(isOdd ? "left" : "right")">View Project</a>
+                    <a href="@project.Link" target="_blank">View Project</a>
                 </div>
                 @if (project.Description.StartsWith("<li>"))
                 {
@@ -34,10 +36,12 @@
                 }
                 else if (project.Description.StartsWith("<p>"))
                 {
-                    @foreach (var item in project.Description.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        <p>@item.Split('>')[1]</p>
-                    }
+                    <div class="paragraph-rows">
+                        @foreach (var item in project.Description.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <p>@item.Split('>')[1]</p>
+                        }
+                    </div>
                 }
                 else
                 {
@@ -51,12 +55,16 @@
 </div>
 
 @code {
-    private List<Project>? Projects;
-    bool isOdd = false;
-
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetStringAsync("data/projects.json");
-        Projects = System.Text.Json.JsonSerializer.Deserialize<List<Project>>(response);
+        await base.OnInitializedAsync();
+        try
+        {
+            await LoadDataAsync("data/projects.json");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 }

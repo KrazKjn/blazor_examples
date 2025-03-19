@@ -1,28 +1,29 @@
 @page "/myblogs"
 
-@inject HttpClient Http
-@inject IJSRuntime JSRuntime
+@inherits BaseDataPage<BlogPost>
+
+<PageTitle>Mark J. Hogan - My Blogs</PageTitle>
 
 <div class="container">
     <h2>Blog</h2>
 
-    @if (BlogPosts == null)
+    @if (Items == null)
     {
         <p>Loading Blog posts...</p>
     }
     else
     {
-        @foreach (var post in BlogPosts)
+        @foreach (var post in Items)
         {
             <h3>@post.Title</h3>
             <div class="recommendation@(isOdd ? " reverse" : "")">
                 @* // isMobile *@
-                <div style="float: @(isOdd ? "left" : "right");">
+                <div class="image-container-@(isOdd ? "left" : "right")">
                     @if (!string.IsNullOrWhiteSpace(post.ImageUrl))
                     {
                         <img src="@post.ImageUrl" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
                     }
-                    <a href="@post.Link" target="_blank" class="link-@(isOdd ? "left" : "right")">Read More</a>
+                    <a href="@post.Link" target="_blank">Read More</a>
                 </div>
                 @if (post.Summary.StartsWith("<li>"))
                 {
@@ -35,10 +36,12 @@
                 }
                 else if (post.Summary.StartsWith("<p>"))
                 {
-                    @foreach (var item in post.Summary.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        <p>@item.Split('>')[1]</p>
-                    }
+                    <div class="paragraph-rows">
+                        @foreach (var item in post.Summary.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <p>@item.Split('>')[1]</p>
+                        }
+                    </div>
                 }
                 else
                 {
@@ -52,15 +55,16 @@
 </div>
 
 @code {
-    private List<BlogPost>? BlogPosts;
-    bool isOdd = false;
-    private int windowWidth;
-    private bool isMobile => windowWidth <= 768;
-
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetStringAsync("data/blogposts.json");
-        BlogPosts = System.Text.Json.JsonSerializer.Deserialize<List<BlogPost>>(response);
-        windowWidth = await JSRuntime.InvokeAsync<int>("getWindowWidth");
+        await base.OnInitializedAsync();
+        try
+        {
+            await LoadDataAsync("data/blogposts.json");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 }

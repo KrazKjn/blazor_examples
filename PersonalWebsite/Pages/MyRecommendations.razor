@@ -1,19 +1,20 @@
 @page "/myrecommendations"
 
-@inject HttpClient Http
-@inject IJSRuntime JS
+@inherits BaseDataPage<Recommendation>
+
+<PageTitle>Mark J. Hogan - My Recommendations</PageTitle>
 
 <div class="container">
     <h2>What People Say About Me</h2>
 
-    @if (Recommendations == null)
+    @if (Items == null)
     {
         <p>Loading recommendations...</p>
     }
     else
     {
         <div class="recommendations">
-        @foreach (var recommendation in Recommendations)
+        @foreach (var recommendation in Items)
         {
             <div class="recommendation@(isOdd ? " reverse" : "")">
                 <img src="@recommendation.ImageUrl" alt="@recommendation.Author" class="rounded-circle image-url-@(isOdd ? "left" : "right")" />
@@ -31,13 +32,18 @@
         </div>
     }
 </div>
-@code {
-    private List<Recommendation>? Recommendations;
-    bool isOdd = false;
 
+@code {
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetStringAsync("data/recommendations.json");
-        Recommendations = System.Text.Json.JsonSerializer.Deserialize<List<Recommendation>>(response);
+        await base.OnInitializedAsync();
+        try
+        {
+            await LoadDataAsync("data/recommendations.json");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 }

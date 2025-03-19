@@ -1,5 +1,6 @@
 ﻿@page "/"
-@inject IJSRuntime JS
+
+@inherits BasePage
 
 <PageTitle>Mark J. Hogan</PageTitle>
 
@@ -7,52 +8,3 @@
     <h1>Welcome to Mark J. Hogan's Personal Website</h1>
     <p class="right-column">I am Mark J. Hogan, a Software Engineering Professional. Experienced in designing, developing, architecting, and managing solutions. Welcome to my personal website created using Blazor!</p>
 </div>
-
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        await ChangeBackground();
-    }
-
-    private async Task ChangeBackground()
-    {
-        // Get the saved background image from session storage
-        string savedImage = await JS.InvokeAsync<string>("sessionStorage.getItem", "backgroundImage");
-
-        Console.WriteLine($"savedImage: {savedImage}");
-
-        string imageUrl = "images/"; // Path to your image
-        string currentImage = "";
-        if (savedImage == null || string.IsNullOrEmpty(savedImage) || savedImage == "null")
-        {
-            string currentBackgroundImage = await JS.InvokeAsync<string>("getBodyBackground");
-            Console.WriteLine($"currentBackgroundImage: {currentBackgroundImage}");
-            currentImage = currentBackgroundImage.Split('/').Last().Split('"').First();
-            Console.WriteLine($"currentImage: {currentImage}");
-        }
-        else
-        {
-            Console.WriteLine($"Setting currentImage: {currentImage} to {savedImage}");
-            currentImage = savedImage;
-        }
-        switch (currentImage)
-        {
-            case "background1.jpg":
-                currentImage = "background2.jpg";
-                break;
-            case "background2.jpg":
-                currentImage = "background3.jpg";
-                break;
-            default:
-                currentImage = "background1.jpg";
-                break;
-        }
-        imageUrl += currentImage;
-        Console.WriteLine($"new imageUrl: {imageUrl}");
-        await JS.InvokeVoidAsync("setBodyBackground", imageUrl);
-
-        // Save the new background image to session storage
-        await JS.InvokeVoidAsync("sessionStorage.setItem", "backgroundImage", currentImage);
-        Console.WriteLine($"savedImage to: {currentImage}");
-    }
-}

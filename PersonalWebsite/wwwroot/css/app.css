@@ -2,18 +2,20 @@ body {
     margin: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: whitesmoke;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/background1.jpg'); /* Path to the image */    
+    background-color:rgba(12, 9, 9, 0.69);
+    margin-left: 5%;
+    margin-right: 5%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/background1.jpg'); /* Path to the image */
     background-size: cover; /* Ensure the image covers the whole section */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Avoid repeating the image */
-    margin-left: 5%;
-    margin-right: 5%;
 }
 
 html {
     margin: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: whitesmoke;
+    height: var(--dynamic-height);
 }
 
 body.dynamic-background {
@@ -95,19 +97,19 @@ a, .btn-link {
     margin: 20vh auto 1rem auto;
 }
 
-    .loading-progress circle {
-        fill: none;
-        stroke: #e0e0e0;
-        stroke-width: 0.6rem;
-        transform-origin: 50% 50%;
-        transform: rotate(-90deg);
-    }
+.loading-progress circle {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
 
-        .loading-progress circle:last-child {
-            stroke: #1b6ec2;
-            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
-            transition: stroke-dasharray 0.05s ease-in-out;
-        }
+.loading-progress circle:last-child {
+    stroke: #1b6ec2;
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
 
 .loading-progress-text {
     position: absolute;
@@ -116,9 +118,9 @@ a, .btn-link {
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
 }
 
-    .loading-progress-text:after {
-        content: var(--blazor-load-percentage-text, "Loading");
-    }
+.loading-progress-text:after {
+    content: var(--blazor-load-percentage-text, "Loading");
+}
 
 code {
     color: #c02d76;
@@ -200,12 +202,17 @@ div {
 .recommendation {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
+    align-items: flex-start;
     gap: 20px; /* Spacing between image and quote */
 }
 
 .recommendation.reverse {
     flex-direction: row-reverse; /* Reverse layout for zig-zag effect */
+}
+
+.paragraph-rows {
+    flex-direction: column;
 }
 
 .image {
@@ -235,6 +242,18 @@ div {
     height: 200px;
 }
 
+.image-container-left {
+    max-width: 210px;
+    float: left;
+    text-align: center; 
+}
+
+.image-container-right {
+    max-width: 210px;
+    float: right;
+    text-align: center; 
+}
+
 .image-url-left {
     float: left;
     margin-right: 10px;
@@ -260,18 +279,24 @@ div {
     display: inline-block;
     float: right;
 }
-@media (max-width: 768px) { /* Adjust the width for mobile devices */
+@media (max-width: 640.98px) { /* Adjust the width for mobile devices */
     .right-column {
         width: 100%; /* Full width for mobile */
-        text-align: justify; /* Aligns with both the left and right edges */
+        height: 100%; /* Full width for mobile */
+        text-align: left; /* Aligns with both the left and right edges */
         margin-left: 0; /* Reset margin for mobile */
     }
 
-    .my-image {
-        width: 25px;
-        height: 25px;
+    .image-container-left {
+        max-width: 80px;
+        float: left;
     }
-
+    
+    .image-container-right {
+        max-width: 80px;
+        float: right;
+    }
+        
     .image-url-left {
         float: left;
         margin-right: 4px;
