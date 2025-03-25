@@ -9,6 +9,9 @@ public class BasePage : ComponentBase
 
     protected bool isOdd = false;
     protected int windowWidth = 0;
+    protected string hostName = "";
+    protected bool isDevelopment = true;
+    protected string baseHref = "/";
 
     // Shared method
     protected void LogMessage(string message)
@@ -26,6 +29,9 @@ public class BasePage : ComponentBase
     {
         await base.OnInitializedAsync();
         windowWidth = await JSRuntime!.InvokeAsync<int>("getWindowWidth");
+        hostName = await JSRuntime!.InvokeAsync<string>("getHostname");
+        isDevelopment = hostName == "localhost";
+        baseHref = isDevelopment ? "" : "/my-personal-blazor-website";
         await JSRuntime!.InvokeVoidAsync("verifyBackgroundImage");
     }
     
@@ -41,5 +47,12 @@ public class BasePage : ComponentBase
         {
         }
         await JSRuntime!.InvokeVoidAsync("setDynamicCssHeight");
+    }
+
+    protected string GetImagePath(string src)
+    {
+        if (src.StartsWith('/'))
+            return $"{baseHref}{src}";
+        return src;
     }
 }

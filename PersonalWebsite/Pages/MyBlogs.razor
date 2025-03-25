@@ -1,5 +1,5 @@
 @page "/myblogs"
-
+@using PersonalWebsite.Components
 @inherits BaseDataPage<BlogPost>
 
 <PageTitle>Mark J. Hogan - My Blogs</PageTitle>
@@ -21,32 +21,11 @@
                 <div class="image-container-@(isOdd ? "left" : "right")">
                     @if (!string.IsNullOrWhiteSpace(post.ImageUrl))
                     {
-                        <img src="@post.ImageUrl" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
+                        <img src="@GetImagePath(post.ImageUrl)" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
                     }
                     <a href="@post.Link" target="_blank">Read More</a>
                 </div>
-                @if (post.Summary.StartsWith("<li>"))
-                {
-                    <ul>
-                        @foreach (var item in post.Summary.Split("</li>", StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            <li>@item.Split('>')[1]</li>
-                        }
-                    </ul>
-                }
-                else if (post.Summary.StartsWith("<p>"))
-                {
-                    <div class="paragraph-rows">
-                        @foreach (var item in post.Summary.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            <p>@item.Split('>')[1]</p>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p>@post.Summary</p>
-                }   
+                <TextFormatter Content="@post.Summary" QuoteText="false" />
             </div>
             <br />
             isOdd = !isOdd;

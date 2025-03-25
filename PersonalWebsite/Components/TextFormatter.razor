@@ -1,0 +1,63 @@
+@using System
+@using System.Linq
+
+@code {
+    [Parameter] public required string Content { get; set; }
+    [Parameter] public required bool QuoteText { get; set; }
+}
+
+@if (Content.StartsWith("<li>"))
+{
+    <ul>
+        @foreach (var item in Content.Split("</li>", StringSplitOptions.RemoveEmptyEntries))
+        {
+            <li>@item.Split('>')[1]</li>
+        }
+    </ul>
+}
+else if (Content.StartsWith("<p>"))
+{
+    <div class="paragraph-rows">
+        @{
+            var paragraphs = Content.Split("</p>", StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        @for (int i = 0; i < paragraphs.Length; i++)
+        {
+            if (QuoteText) 
+            {
+                if (i == 0 && i == paragraphs.Length - 1)
+                {
+                    <p>"@paragraphs[i].Split('>')[1]"</p>
+                }
+                else if (i == 0)
+                {
+                    <p>"@paragraphs[i].Split('>')[1]</p>
+                }
+                else if (i == paragraphs.Length - 1)
+                {
+                    <p>@paragraphs[i].Split('>')[1]"</p>
+                }
+                else
+                {
+                    <p>@paragraphs[i].Split('>')[1]</p>
+                }
+            }
+            else
+            {
+                <p>@paragraphs[i].Split('>')[1]</p>
+            }
+        }
+    </div>
+}
+else
+{
+    if (QuoteText) 
+    {
+        <p>"@Content"</p>
+    }
+    else
+    {
+        <p>@Content</p>
+    }
+}

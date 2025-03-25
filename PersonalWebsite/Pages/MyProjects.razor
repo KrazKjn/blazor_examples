@@ -1,5 +1,5 @@
 @page "/myprojects"
-
+@using PersonalWebsite.Components
 @inherits BaseDataPage<Project>
 
 <PageTitle>Mark J. Hogan - My Projects</PageTitle>
@@ -21,32 +21,11 @@
                 <div class="image-container-@(isOdd ? "left" : "right")">
                     @if (!string.IsNullOrWhiteSpace(project.ImageUrl))
                     {
-                        <img src="@project.ImageUrl" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
+                        <img src="@GetImagePath(project.ImageUrl)" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
                     }
                     <a href="@project.Link" target="_blank">View Project</a>
                 </div>
-                @if (project.Description.StartsWith("<li>"))
-                {
-                    <ul>
-                        @foreach (var item in project.Description.Split("</li>", StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            <li>@item.Split('>')[1]</li>
-                        }
-                    </ul>
-                }
-                else if (project.Description.StartsWith("<p>"))
-                {
-                    <div class="paragraph-rows">
-                        @foreach (var item in project.Description.Split("</p>", StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            <p>@item.Split('>')[1]</p>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p>@project.Description</p>
-                }   
+                <TextFormatter Content="@project.Description" QuoteText="false" />
             </div>
             <br />
             isOdd = !isOdd;
