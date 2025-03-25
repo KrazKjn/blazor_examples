@@ -16,7 +16,7 @@ public class BasePage : ComponentBase
     protected string baseHref = "/";
     // File path for the current page
     protected virtual string? FilePath { get; set; }
-    protected string GitHubLinkUrl => $"https://github.com/KrazKjn/my-personal-react-website/blob/main/src/{FilePath}";
+    protected string GitHubLinkUrl => $"https://github.com/KrazKjn/blazor_examples/tree/main/PersonalWebsite/{FilePath}";
 
     // Shared method
     protected void LogMessage(string message)
