@@ -1,10 +1,12 @@
 @page "/myrecommendations"
 @using PersonalWebsite.Components
+@using PersonalWebsite.Components.GitHubLink
 @inherits BaseDataPage<Recommendation>
 
 <PageTitle>Mark J. Hogan - My Recommendations</PageTitle>
 
 <div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
     <h2>What People Say About Me</h2>
 
     @if (Items == null)
@@ -34,6 +36,8 @@
 </div>
 
 @code {
+    protected override string FilePath => "pages/MyRecommendations/MyRecommendations.razor";
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

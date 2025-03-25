@@ -1,14 +1,27 @@
 @page "/resumes"
-
+@using PersonalWebsite.Components.GitHubLink
 @inherits BasePage
 
 <PageTitle>Mark J. Hogan - My Resumes</PageTitle>
 
 <div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
     <h1>My Resumes</h1>
     <p>Select a resume to view:</p>
     <ul>
-        <li><a href="resume-engineer">Engineer Resume</a></li>
-        <li><a href="resume-manager">Manager Resume</a></li>
+        <li>
+            <NavLink class="nav-link" href="resume-engineer">
+                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Engineer Resume
+            </NavLink>
+        </li>
+        <li>
+            <NavLink class="nav-link" href="resume-manager">
+                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Manager Resume
+            </NavLink>
+        </li>
     </ul>
 </div>
+
+@code {
+    protected override string FilePath => "pages/Resumes/Resumes.razor";
+}

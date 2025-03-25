@@ -1,10 +1,11 @@
 @page "/resume-engineer"
-
+@using PersonalWebsite.Components.GitHubLink
 @inherits BasePage
 
 <PageTitle>Engineer Resume</PageTitle>
 
 <div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
     <h1>Engineer Resume</h1>
     <iframe src="files/2025 - Resume - Engineer - Full.pdf" class="pdf-viewer"></iframe>
     <p>
@@ -13,3 +14,7 @@
         </a>
     </p>
 </div>
+
+@code {
+    protected override string FilePath => "pages/ResumeEngineer/ResumeEngineer.razor";
+}

@@ -1,10 +1,15 @@
 ﻿@page "/"
-
+@using PersonalWebsite.Components.GitHubLink
 @inherits BasePage
 
 <PageTitle>Mark J. Hogan</PageTitle>
 
 <div id="main-page">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
     <h1>Welcome to Mark J. Hogan's Personal Website</h1>
     <p class="right-column">I am Mark J. Hogan, a Software Engineering Professional. Experienced in designing, developing, architecting, and managing solutions. Welcome to my personal website created using Blazor!</p>
 </div>
+
+@code {
+    protected override string FilePath => "pages/Home/Home.razor";
+}

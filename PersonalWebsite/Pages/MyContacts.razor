@@ -1,10 +1,11 @@
 @page "/mycontacts"
-
+@using PersonalWebsite.Components.GitHubLink
 @inherits BasePage
 
 <PageTitle>Mark J. Hogan - My Contact Information</PageTitle>
 
 <div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
     <h2>My Contact Information</h2>
     <ul>
         <li><strong>Email:</strong> <a href="mailto:Mark.Hogan.La@outlook.com">Mark.Hogan.La@outlook.com</a></li>
@@ -12,3 +13,7 @@
         <li><strong>GitHub:</strong> <a href="https://github.com/KrazKjn" target="_blank">github.com/KrazKjn</a></li>
     </ul>
 </div>
+
+@code {
+    protected override string FilePath => "pages/MyContacts/MyContacts.razor";
+}
