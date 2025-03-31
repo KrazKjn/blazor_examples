@@ -22,6 +22,12 @@ public class Project
     public string ImageUrl { get; set; }
 
     /// <summary>
+    /// List of projects
+    /// </summary>
+    /// <remarks>Used for serialization</remarks>   
+    public List<Project>? Projects { get; set; }
+
+    /// <summary>
     /// Constructor for Project
     /// </summary>
     /// <param name="name"></param>
