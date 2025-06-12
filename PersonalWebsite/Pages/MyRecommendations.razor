@@ -19,7 +19,7 @@
         @foreach (var recommendation in Items)
         {
             <div class="recommendation@(isOdd ? " reverse" : "")">
-                <img src="@GetImagePath(recommendation.ImageUrl)" alt="@recommendation.Author" class="rounded-circle image-url-@(isOdd ? "left" : "right")" />
+                <img src="@GetImagePath(recommendation.ImageUrl)" alt="(@recommendation.ImageAlt ?? @recommendation.Author)" class="rounded-circle image-url-@(isOdd ? "left" : "right")" />
                 <blockquote>
                     <TextFormatter Content="@recommendation.TextBody" QuoteText="true" />
                     <footer>

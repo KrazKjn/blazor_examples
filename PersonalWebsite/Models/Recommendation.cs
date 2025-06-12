@@ -22,18 +22,25 @@ public class Recommendation
     public string ImageUrl { get; set; }
 
     /// <summary>
+    /// Image Alt text for the recommendation
+    /// </summary>
+    public string ImageAlt { get; set; }
+
+    /// <summary>
     /// Constructor for Recommendation
     /// </summary>
     /// <param name="author"></param>
     /// <param name="textBody"></param>
     /// <param name="link"></param>
     /// <param name="imageUrl"></param>
-    public Recommendation(string author, string textBody, string link, string imageUrl)
+    /// <param name="imageAlt"></param>
+    public Recommendation(string author, string textBody, string link, string imageUrl, string imageAlt)
     {
         Author = author;
         TextBody = textBody;
         Link = link;
         ImageUrl = imageUrl;
+        ImageAlt = imageAlt;
     }
 
     /// <summary>
@@ -45,5 +52,6 @@ public class Recommendation
         TextBody = "";
         Link = "";
         ImageUrl = "";
+        ImageAlt = "";
     }
 }
