@@ -22,6 +22,11 @@ public class Project
     public string ImageUrl { get; set; }
 
     /// <summary>
+    /// Image Alternate text for the recommendation
+    /// </summary>
+    public string ImageAlt { get; set; }
+
+    /// <summary>
     /// List of projects
     /// </summary>
     /// <remarks>Used for serialization</remarks>   
@@ -33,12 +38,13 @@ public class Project
     /// <param name="name"></param>
     /// <param name="description"></param>
     /// <param name="link"></param>
-    public Project(string name, string description, string link, string imageUrl)
+    public Project(string name, string description, string link, string imageUrl, string imageAlt)
     {
         Name = name;
         Description = description;
         Link = link;
         ImageUrl = imageUrl;
+        ImageAlt = imageAlt;
     }
 
     /// <summary>
@@ -50,5 +56,6 @@ public class Project
         Description = "";
         Link = "";
         ImageUrl = "";
+        ImageAlt = "";
     }
 }

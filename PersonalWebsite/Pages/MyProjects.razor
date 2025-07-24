@@ -21,20 +21,31 @@
             <div class="recommendation@(isOdd ? " reverse" : "")">
                 <div class="image-container-@(isOdd ? "left" : "right")">
                     <a href="@project.Link" target="_blank" rel="noopener noreferrer" title="View @(project.Name) Repository ...">
-                    @if (!string.IsNullOrWhiteSpace(project.ImageUrl))
+                    @{
+                        var imagePath = GetImagePath(project.ImageUrl);
+                        var hasImage = !string.IsNullOrWhiteSpace(project.ImageUrl);
+                        var hasAlt = !string.IsNullOrWhiteSpace(project.ImageAlt);
+                        var alignmentClass = $"image-url-{(isOdd ? "left" : "right")}";
+                    }
+
+                    @if (hasImage)
                     {
-                        <img src="@GetImagePath(project.ImageUrl)" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
+                        <img src="@imagePath" class="rounded-3 @alignmentClass" alt="@(hasAlt ? project.ImageAlt : null)" />
+                    }
+                    else if (hasAlt)
+                    {
+                        @project.ImageAlt
                     }
                     else
                     {
-                       <span>View Project(s) Repository</span>
+                        <span>View Project(s) Repository</span>
                     }
                     </a>
                 </div>
                 <TextFormatter Content="@project.Description" QuoteText="false" />
                 @if (project.Projects != null && project.Projects.Count > 0)
                 {
-                    <div className="projects-container">
+                    <div class="projects-container">
                         <h4>Try these Projects ...</h4>
                         <ul class="project-list">
                             @foreach (var subProject in project.Projects)

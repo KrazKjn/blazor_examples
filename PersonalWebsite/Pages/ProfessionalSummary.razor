@@ -1,69 +1,103 @@
 ﻿@page "/professionalsummary"
 @using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.CallToAction
 @inherits BasePage
 
 <PageTitle>Mark J. Hogan - Professional Summary</PageTitle>
 
 <div class="container">
     <GitHubLink FullURL="@GitHubLinkUrl" />
-    <h1>Professional Summary</h1>
+    <h1>🧠 Professional Summary</h1>
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#expertise_approach">🚀 Expertise & Approach</a></li>
+        <li><a href="#skills">🧰 Core Skills</a></li>
+        <li><a href="#accomplishments">🌟 Selected Accomplishments</a></li>
+        <li><a href="#experience">🧭 Career Journey</a></li>
+        <li><a href="#education">🎓 Education</a></li>
+        <li><a href="#connect">📬 Let’s Connect & Collaborate</a></li>
+    </ul>
+    <p id="overview">
+        Results-driven Senior Software Engineer and Engineering Leader with 20+ years of experience architecting scalable solutions and guiding teams in healthcare, enterprise SaaS, and industrial domains.
+    </p>
     <p>
-        Results-driven Senior Software Engineer with over 20 years of experience in IT, specializing in software development, 
-        design, architecture, and Agile methodologies. Demonstrated expertise in leading engineering teams, managing complex projects, 
-        and driving innovative solutions. Proven track record of achieving zero-outage releases, significantly enhancing product stability 
-        and client satisfaction. Proficient in Microsoft .NET, REST/SOAP web services, real-time development, and utilizing CoPilot and AI 
-        tools to optimize code quality and efficiency. Adept at designing and architecting robust software systems, and monitoring performance 
-        to ensure continuous improvement. Dual Bachelor's degrees in Computer Science and Mathematics. Committed to fostering a culture of 
-        continuous learning and collaboration, delivering high-quality, client-focused solutions.
+        Proven success in zero-defect releases, modernization, and technical mentorship across distributed environments. Skilled in Microsoft .NET, REST/SOAP services, real-time systems, and leveraging AI tools like Copilot to optimize delivery.
+    </p>
+    <p>
+        Passionate about shaping system architecture, mentoring engineers, and building platforms that prioritize reliability, interoperability, and user empathy.
     </p>
 
-    <h2>Core Skills</h2>
+    <h2 id="expertise_approach">� Expertise & Approach</h2>
     <ul>
-        <li><strong>Technical Skills:</strong> Microsoft .NET (C#, VB, C++), REST/SOAP Web Service Development, ASP.NET, Microsoft SQL Server, T-SQL, Scripting, Real-Time Development, Multithreaded Development, Microsoft Windows API, CoPilot and AI Tools</li>
-        <li><strong>Soft Skills:</strong> Team Oriented, Solid Communicator, Problem Resolution, Quality Assurance, Source Control, Git Flow</li>
+        <li><strong>Technical Skills:</strong> Microsoft .NET (C#, VB, C++), REST/SOAP Web Services, ASP.NET, SQL Server, T-SQL, Scripting, Multithreaded Development, Windows API, React, GitHub Actions, Copilot</li>
+        <li><strong>Soft Skills:</strong> Team Leadership, Communication, Root Cause Analysis, Agile/SAFe Facilitation, QA and DevOps Alignment</li>
     </ul>
 
-    <h2>Selected Accomplishments</h2>
+    <h2 id="skills">🧰 Core Skills</h2>
+    <div class="skills-columns">
+        <div>
+            <h4>Technical Skills</h4>
+            <ul>
+                <li>Microsoft .NET (C#, VB, C++)</li>
+                <li>REST/SOAP Web Services</li>
+                <li>ASP.NET, SQL Server, T-SQL</li>
+                <li>Scripting & Multithreaded Development</li>
+                <li>Windows API, React, GitHub Actions</li>
+                <li>Copilot & AI-assisted development</li>
+            </ul>
+            </div>
+
+            <div>
+            <h4>Soft Skills</h4>
+            <ul>
+                <li>Team Leadership</li>
+                <li>Clear Communication</li>
+                <li>Root Cause Analysis</li>
+                <li>Agile/SAFe Facilitation</li>
+                <li>QA and DevOps Alignment</li>
+            </ul>
+            </div>
+
+            <div>
+            <h4>Delivery Methodologies</h4>
+            <ul>
+                <li>Agile (Scrum, SAFe)</li>
+                <li>Program Increment (PI) Planning</li>
+                <li>CI/CD Automation</li>
+                <li>Zero-Defect Release Strategy</li>
+                <li>TDD / CDD Practices</li>
+                <li>Backend-for-Frontend (BFF) Architecture</li>
+            </ul>
+        </div>
+    </div>
+    <h2 id="accomplishments">🌟 Selected Accomplishments</h2>
     <ul>
-        <li>Led the design and implementation of a Backend for Frontend (BFF) project, transitioning a legacy WPF product to REACT and C# .NET Core, enabling a cross-platform product and reducing client cancellations by 4%.</li>
-        <li>Spearheaded a quality initiative that achieved the first two consecutive production releases with zero "Severity 1" defects, improving product stability.</li>
-        <li>Automated 100% hands-free system builds for Honeywell Experion and Yokogawa CENTUM VP systems, reducing build times by 50%-75%.</li>
-        <li>Reduced system refresh cycles from two months to two weeks with Texaco’s Managed Desktop Solution.</li>
-        <li>Implemented a plant-wide Real-Time SCADA System and Historian using Aspentech CIM/21, achieving 100% visibility of real-time data.</li>
+        <li>Designed and implemented Backend-for-Frontend (BFF) architecture, transitioning a legacy WPF product to React and .NET Core</li>
+        <li>Delivered the first two consecutive zero-defect releases, increasing client satisfaction and deployment reliability</li>
+        <li>Automated hands-free, full system builds for enterprise platforms, reducing setup times by 50–75%</li>
+        <li>Reduced refresh cycles from two months to two weeks through managed desktop design</li>
+        {/* We can append additional Manager/Architect/Engineer content here */}
     </ul>
 
-    <h2>Professional Experience</h2>
-    <h3>Accruent | New Orleans, LA | September 2018 – December 2024</h3>
-    <ul>
-        <li>Engaged in all aspects of project development, encompassing design, architecture, coding, unit testing, QA testing, and CI/CD pipeline management.</li>
-        <li>Delivered a product prototype of a Backend for Frontend (BFF) project within five months, transitioning a legacy WPF product to REACT and C# .NET Core.</li>
-        <li>Collaborated with the support team to perform root cause analysis on customer issues, resolving technical debt and bugs.</li>
-        <li>Led a team through backlog refinement, resolving over 150 issues, improving efficiency by 17%, and streamlining processes.</li>
-        <li>Mentored a diverse engineering team of 9 members across different countries and time zones, fostering collaboration and skill development.</li>
-    </ul>
+    <h2 id="experience">🧭 Career Journey</h2>
+    <h3><strong>Accruent</strong> Sep 2018 – Dec 2024</h3>
+    <p>Led end-to-end engineering lifecycle from design and architecture to QA testing and CI/CD deployment. Prototyped BFF transition in five months and guided backlog remediation resolving 150+ technical issues. Mentored engineers across global time zones, fostering a scalable and collaborative team culture.</p>
 
-    <h3>General Dynamics Information Technology | New Orleans, LA | February 2016 - June 2018</h3>
-    <ul>
-        <li>Automated release management processes using C#/TFS APIs, Python, JSON, Jenkins/Groovy, and Nexus.</li>
-        <li>Implemented custom TFS report and time sheet management applications, streamlining internal processes.</li>
-    </ul>
+    <h3><strong>General Dynamics IT</strong> Feb 2016 – Jun 2018</h3>
+    <p>Architected and automated release pipelines using C#, Python, JSON, Jenkins/Groovy. Developed TFS-integrated reporting solutions to streamline operations and internal workflows</p>
 
-    <h3>System Management Technologies, Inc. | New Orleans, LA | March 1999 – February 2016</h3>
-    <ul>
-        <li>Developed IT Works software management solution, automating system builds and reducing technician effort significantly.</li>
-    </ul>
+    <h3><strong>System Management Technologies</strong> Mar 1999 – Feb 2016</h3>
+    <p>Built and deployed the IT Works suite for system automation, configuration modeling, and technician workflow efficiency</p>
 
-    <h3>Texaco, Inc. | Wilmington, CA | January 1997 – March 1999</h3>
-    <ul>
-        <li>Implemented Texaco Refining and Marketing’s Managed Desktop Solution, reducing system refresh cycles to two weeks.</li>
-        <li>Designed a Distributed Control System (DCS) for real-time data transfer and plant-wide integration.</li>
-    </ul>
+    <h3><strong>Texaco, Inc.</strong> Jan 1997 – Mar 1999</h3>
+    <p>Implemented real-time distributed control systems and optimized refresh cycle workflows with a plant-wide desktop solution</p>
 
-    <h2>Education</h2>
+    <h2 id="education">🎓 Education</h2>
     <ul>
-        <li>Bachelor of Science in Mathematics – Nicholls State University – Thibodaux, LA</li>
-        <li>Bachelor of Science in Computer Science – Nicholls State University – Thibodaux, LA</li>
+        <li>B.S. in Mathematics – Nicholls State University</li>
+        <li>B.S. in Computer Science – Nicholls State University</li>
     </ul>
+    <CallToAction />
 </div>
 
 @code {

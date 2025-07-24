@@ -1,17 +1,13 @@
 @page "/mycontacts"
 @using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.CallToAction
 @inherits BasePage
 
 <PageTitle>Mark J. Hogan - My Contact Information</PageTitle>
 
 <div class="container">
     <GitHubLink FullURL="@GitHubLinkUrl" />
-    <h2>My Contact Information</h2>
-    <ul>
-        <li><strong>Email:</strong> <a href="mailto:Mark.Hogan.La@outlook.com">Mark.Hogan.La@outlook.com</a></li>
-        <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/markhoganinla" target="_blank">linkedin.com/in/markhoganinla</a></li>
-        <li><strong>GitHub:</strong> <a href="https://github.com/KrazKjn" target="_blank">github.com/KrazKjn</a></li>
-    </ul>
+    <CallToAction />
 </div>
 
 @code {
