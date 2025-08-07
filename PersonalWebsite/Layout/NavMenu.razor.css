@@ -97,3 +97,20 @@
         overflow-y: auto;
     }
 }
+
+.bi-lightbulb-fill-nav-menu {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ffc107;
+}
+
+.bi-robot-nav-menu {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #0dcaf0;
+}
+
+.bi-boxes {
+  /* color: #0d6efd; Bootstrap primary */
+  margin-right: 0.5rem;
+}

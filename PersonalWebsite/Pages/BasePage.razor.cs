@@ -8,10 +8,17 @@ public class BasePage : ComponentBase
 {
     [Inject]
     protected IJSRuntime? JSRuntime { get; set; }
-
     protected bool isOdd = false;
     protected int windowWidth = 0;
     protected string hostName = "";
+    protected string ContactEmail = "Mark.Hogan.La@outlook.com";
+    protected string LinkedInProfile = "https://linkedin.com/in/MarkHoganInLa";
+    protected string GitHubProfile = "https://github.com/KrazKjn";
+    protected string ContactPhone = "+1 (504) 722-4459";
+    protected string TwitterProfile = string.Empty;
+    protected string FacebookProfile = string.Empty;
+    protected string InstagramProfile = string.Empty;
+
     protected bool isDevelopment = true;
     protected string baseHref = "/";
     // File path for the current page
@@ -29,17 +36,58 @@ public class BasePage : ComponentBase
     {
         base.OnInitialized();
     }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await LoadSiteConfig();
         windowWidth = await JSRuntime!.InvokeAsync<int>("getWindowWidth");
         hostName = await JSRuntime!.InvokeAsync<string>("getHostname");
         isDevelopment = hostName == "localhost";
         baseHref = isDevelopment ? "" : "/my-personal-blazor-website";
-        await JSRuntime!.InvokeVoidAsync("verifyBackgroundImage");
+        await JSRuntime!.InvokeVoidAsync("verifyBackgroundImage");       
     }
-    
+
+    protected async Task LoadSiteConfig()
+    {
+        try
+        {
+            var configJson = await System.IO.File.ReadAllTextAsync("data/siteconfig.json");
+            var config = System.Text.Json.JsonDocument.Parse(configJson);
+            if (config.RootElement.TryGetProperty("ContactEmail", out var emailProp))
+            {
+                ContactEmail = emailProp.GetString() ?? ContactEmail;
+            }
+            if (config.RootElement.TryGetProperty("LinkedInProfile", out var linkedInProp))
+            {
+                LinkedInProfile = linkedInProp.GetString() ?? LinkedInProfile;
+            }
+            if (config.RootElement.TryGetProperty("GitHubProfile", out var gitHubProp))
+            {
+                GitHubProfile = gitHubProp.GetString() ?? GitHubProfile;
+            }
+            if (config.RootElement.TryGetProperty("ContactPhone", out var phoneProp))
+            {
+                ContactPhone = phoneProp.GetString() ?? ContactPhone;
+            }
+            if (config.RootElement.TryGetProperty("TwitterProfile", out var twitterProp))
+            {
+                TwitterProfile = twitterProp.GetString() ?? TwitterProfile;
+            }
+            if (config.RootElement.TryGetProperty("FacebookProfile", out var facebookProp))
+            {
+                FacebookProfile = facebookProp.GetString() ?? FacebookProfile;
+            }
+            if (config.RootElement.TryGetProperty("InstagramProfile", out var instagramProp))
+            {
+                InstagramProfile = instagramProp.GetString() ?? InstagramProfile;
+            }
+        }
+        catch (Exception ex)
+        {
+            LogMessage($"Error loading site configuration: {ex.Message}");
+        }
+    }
+
     // Method to call a JavaScript function
     protected async Task InvokeJavaScriptFunctionAsync(string functionName, params object[] args)
     {

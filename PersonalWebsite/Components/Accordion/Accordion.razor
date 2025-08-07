@@ -1,0 +1,18 @@
+<div class="accordion">
+  <div class="header" @onclick="Toggle">
+    @Title
+  </div>
+  @if (!Collapsed)
+  {
+    <div class="body">
+      @ChildContent
+    </div>
+  }
+
+  @code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private bool Collapsed = true;
+    void Toggle() => Collapsed = !Collapsed;
+  }
+</div>

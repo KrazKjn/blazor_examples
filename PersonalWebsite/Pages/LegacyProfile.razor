@@ -1,0 +1,72 @@
+@page "/legacy-profile"
+@using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.Accordion
+@inherits BasePage
+
+<PageTitle>Legacy Profile</PageTitle>
+<article class="container legacy-profile" role="region" aria-labelledby="legacy-title">
+  <h2 id="legacy-title" class="section-title">
+    <svg class="text-primary me-2" width="20" height="20" fill="whitesmoke" viewBox="0 0 16 16">
+        <path d="M8 3.5a.5.5 0 0 1 .5.5v4h3a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/>
+        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0z"/>
+    </svg>
+    Legacy Systems Engineering
+  </h2>
+
+  <p>
+    Senior Architect and Infrastructure Strategist with proven success stabilizing and modernizing COBOL and FORTRAN 77
+    platforms across SCADA, ICS, and compliance-heavy industrial environments. Adept at translating vintage logic into 
+    maintainable, interoperable systems while mentoring teams and guiding resilient modernization trajectories. Specialized 
+    in integrating legacy components into automated stacks and preserving mission-critical reliability through pragmatic 
+    engineering.
+  </p>
+
+  <div class="skills-grid">
+    <div><strong>Languages:</strong> COBOL (Wang VS), FORTRAN 77, VBScript, Win32 API</div>
+    <div><strong>Systems:</strong> TDACS (Texaco Data Acquisition and Control System), Texaco's ScreenPack & GraphPack Union Systems, Honeywell Hiway/Gateway Interface using DDTs, Honeywell GPCI Interface</div>
+    <div><strong>Architectural Skills:</strong> Legacy system integration, data acquisition workflows, control logic stabilization, 
+telemetry support</div>
+    <div><strong><u>Operational Impact</u>:</strong> Diagnosing persistent logic errors, refactoring for maintainability, restoring designed 
+performance across industrial gateways</div>
+    <div><strong>Modernization Strategy:</strong> Registry hive edits in WinPE, automation workflows, hybrid architecture alignment with 
+Azure</div>
+  </div>
+
+  <Accordion Title="COBOL – Union Carbide (1988–1989)">
+    <ul>
+      <li>Created structured data files using a proprietary file layout utility, integrated with UI scaffolding tools to build <strong>character-based, menu-driven interfaces</strong></li>
+      <li>Developed <strong>multi-screen logic and screen-flow orchestration</strong> with validation rules and application flow enhancements</li>
+      <li>Produced standardized reports using layout-driven reporting utilities to support operational analysis in <strong>compliance-heavy environments</strong></li>
+      <li>Worked part-time during academic semesters and full-time during fall break, contributing consistently to core business systems</li>
+    </ul>
+  </Accordion>
+
+  <Accordion Title="FORTRAN 77 – Texaco TDACS (1990–1996)">
+    <ul>
+      <li>Developed and maintained <strong>character and graphical user interfaces</strong> — including <strong>menu-based screen navigation</strong> — using proprietary systems (<strong>ScreenPack, GraphPack</strong>), interfacing with SCADA/ICS platforms</li>
+      <li>Refactored legacy modules, fixed unresolved bugs, and addressed long-standing issues in control logic and continuous processes</li>
+      <li>Diagnosed and eliminated memory leaks and faulty data transform usage, impacting high-availability systems via <strong>Honeywell Highway/Gateway</strong> (<strong>DDT</strong> integration)</li>
+      <li>Enabled mission-critical processes to operate uninterrupted, <strong>eliminating restart cycles</strong> and stabilizing real-time shared memory usage (TDACS <strong>“Commons”</strong>)</li>
+    </ul>
+  </Accordion>
+
+  <Accordion Title="Modernization Impact">
+    <ul>
+      <li>Migrated fragile physical platforms to virtual environments using customized WinPE workflows, recovering from 
+boot failures by re-enabling device drivers via Registry hive edits in WinPE</li>
+      <li>Created intelligent patch/config systems that proactively resolve legacy faults</li>
+      <li>Transitioned monolithic utilities into modular components for maintainable hybrid environment</li>
+    </ul>
+  </Accordion>
+
+  <iframe src="files/2025 - Resume - Legacy Technology.pdf" class="pdf-viewer"></iframe>
+  <div class="download-link">
+    <a class="btn btn-primary" href="/files/2025 - Resume - Legacy Technology.pdf" target="_blank" rel="noopener noreferrer">
+      📄 Download Legacy Addendum (PDF)
+    </a>
+  </div>
+</article>
+
+@code {
+    protected override string FilePath => "Pages/LegacyProfile.razor";
+}
