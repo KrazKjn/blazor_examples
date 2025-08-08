@@ -1,11 +1,8 @@
 @inherits BasePage
 
 <footer class="call-to-action" id="connect">
-  <h2>📬 Let’s Connect & Collaborate</h2>
-  <p>
-    Whether you're seeking resilient architecture, high-performance engineering teams, or strategy that scales—
-    I'm always open to meaningful conversations and forward-looking opportunities.
-  </p>
+  <h2>@(Title ?? "📬 Let’s Connect & Collaborate")</h2>
+  <p>@(Description ?? "Whether you're seeking resilient architecture, high-performance engineering teams, or strategy that scales—<br />I'm always open to meaningful conversations and forward-looking opportunities.")</p>
   <p>
     Explore my work on
     <a href="@GitHubProfile" target="_blank" rel="noopener noreferrer">GitHub</a>,
@@ -15,5 +12,18 @@
     <a href="mailto:@ContactEmail">email me</a>
     directly to discuss how we can build systems that empower users and outlast trends.
   </p>
-  <p><em>Let’s create something that matters.</em></p>
+  <a class="btn btn-primary mt-2" href="@ResolvedButtonLink">@(ButtonText ?? "Let’s create something that matters.")</a>
 </footer>
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? ButtonText { get; set; }
+    [Parameter] public string? ButtonLink { get; set; }
+
+    private string ResolvedButtonLink =>
+        (ButtonLink != null && ButtonLink.Contains("%ContactEmail%"))
+            ? ButtonLink.Replace("%ContactEmail%", ContactEmail)
+            : (ButtonLink ?? $"mailto:{ContactEmail}?subject=Connect%20and%20Collaborate");
+
+    [Inject] public HttpClient Http { get; set; } = default!;
+}
