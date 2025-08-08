@@ -1,0 +1,115 @@
+@page "/{*path}"
+@inject NavigationManager Navigation
+
+<h3>Page Not Found</h3>
+
+@if (redirectTarget != null)
+{
+    <p>Redirecting to <strong>@redirectTarget</strong>...</p>
+}
+else if (suggestedTarget != null)
+{
+    <p>Did you mean <a href="@suggestedTarget">@suggestedTarget</a>?</p>
+}
+else
+{
+    <p>We couldn't find the page <strong>@path</strong>.</p>
+    <p><a href="/">Return to Home</a></p>
+}
+
+@code {
+    [Parameter]
+    public string? path { get; set; }
+
+    private string? redirectTarget;
+    private string? suggestedTarget;
+
+    private static Dictionary<string, string> knownRoutes = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "ai-training", "/ai-training" },
+        { "training", "/ai-training" },
+        { "workshops", "/ai-training" },
+        { "connect-collaborate", "/connect-collaborate" },
+        { "consulting", "/consulting" },
+        { "contact", "/contact" },
+        { "curriculum-samples", "/curriculum-samples" },
+        { "infrastructure-legacy-systems-engineering-addendum", "/infrastructure-legacy-systems-engineering-addendum" },
+        { "legacy-profile", "/legacy-profile" },
+        { "legacy-profile-document", "/legacy-profile-document" },
+        { "myblogs", "/myblogs" },
+        { "myprojects", "/myprojects" },
+        { "myrecommendations", "/myrecommendations" },
+        { "offerings", "/offerings" },
+        { "problem-solving-profile-document", "/problem-solving-profile-document" },
+        { "professionalsummary", "/professionalsummary" },
+        { "resume-architect", "/resume-architect" },
+        { "resume-engineer", "/resume-engineer" },
+        { "resume-manager", "/resume-manager" },
+        { "resumes", "/resumes" },
+        { "software", "/software" },
+        { "version", "/version" },
+        { "workflow-modernization", "/workflow-modernization" },
+        { "home", "/" },
+        { "", "/" }
+    };
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        // Direct match
+        if (knownRoutes.TryGetValue(path, out var target))
+        {
+            redirectTarget = target;
+            Navigation.NavigateTo(target);
+            return;
+        }
+
+        // Fuzzy match
+        suggestedTarget = FindClosestMatch(path, knownRoutes.Keys);
+        if (suggestedTarget == "/")
+        {
+            redirectTarget = suggestedTarget;
+            Navigation.NavigateTo(suggestedTarget);
+            return;
+        }
+    }
+
+    private static string? FindClosestMatch(string input, IEnumerable<string> options)
+    {
+        return options
+            .Select(option => new { option, distance = LevenshteinDistance(input, option) })
+            .OrderBy(x => x.distance)
+            .FirstOrDefault()?.option is string bestMatch && bestMatch != input
+            ? knownRoutes[bestMatch]
+            : null;
+    }
+
+    // Simple Levenshtein Distance implementation
+    private static int LevenshteinDistance(string s, string t)
+    {
+        var n = s.Length;
+        var m = t.Length;
+        var d = new int[n + 1, m + 1];
+
+        for (int i = 0; i <= n; i++) d[i, 0] = i;
+        for (int j = 0; j <= m; j++) d[0, j] = j;
+
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= m; j++)
+            {
+                int cost = s[i - 1] == t[j - 1] ? 0 : 1;
+                d[i, j] = Math.Min(
+                    Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
+                    d[i - 1, j - 1] + cost);
+            }
+        }
+
+        return d[n, m];
+    }
+}
