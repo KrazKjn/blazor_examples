@@ -1,5 +1,6 @@
 @page "/{*path}"
 @inject NavigationManager Navigation
+@inherits BasePage
 
 <h3>Page Not Found</h3>
 
@@ -64,8 +65,8 @@ else
         // Direct match
         if (knownRoutes.TryGetValue(path, out var target))
         {
-            redirectTarget = target;
-            Navigation.NavigateTo(target);
+            redirectTarget = $"{baseHref}{target}";
+            Navigation.NavigateTo(redirectTarget);
             return;
         }
 
@@ -73,8 +74,8 @@ else
         suggestedTarget = FindClosestMatch(path, knownRoutes.Keys);
         if (suggestedTarget == "/")
         {
-            redirectTarget = suggestedTarget;
-            Navigation.NavigateTo(suggestedTarget);
+            redirectTarget = $"{baseHref}{suggestedTarget}";
+            Navigation.NavigateTo(redirectTarget);
             return;
         }
     }
