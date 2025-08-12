@@ -1,0 +1,20 @@
+@page "/resume-architect"
+@using PersonalWebsite.Components.GitHubLink
+@inherits BasePage
+
+<PageTitle>Architect Resume</PageTitle>
+
+<div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <h1>Architect Resume</h1>
+    <iframe src="files/2025 - Resume - Architect - Full.pdf" class="pdf-viewer"></iframe>
+    <p>
+        <a href="files/2025 - Resume - Architect - Full.pdf" target="_blank" download>
+            Download Architect Resume
+        </a>
+    </p>
+</div>
+
+@code {
+    protected override string FilePath => "Pages/ResumeArchitect/ResumeArchitect.razor";
+}

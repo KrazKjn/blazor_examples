@@ -1,0 +1,20 @@
+@page "/resume-manager"
+@using PersonalWebsite.Components.GitHubLink
+@inherits BasePage
+
+<PageTitle>Manager Resume</PageTitle>
+
+<div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <h1>Manager Resume</h1>
+    <iframe src="files/2025 - Resume - Manager - Full.pdf" class="pdf-viewer"></iframe>
+    <p>
+        <a href="files/2025 - Resume - Manager - Full.pdf" target="_blank" download>
+            Download Manager Resume
+        </a>
+    </p>
+</div>
+
+@code {
+    protected override string FilePath => "Pages/ResumeManager/ResumeManager.razor";
+}

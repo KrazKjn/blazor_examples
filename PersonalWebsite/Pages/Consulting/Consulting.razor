@@ -1,0 +1,31 @@
+@page "/consulting"
+@using PersonalWebsite.Components.GitHubLink
+@inherits BasePage
+
+<PageTitle>Consulting Services</PageTitle>
+
+<div class="container py-4">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <h1 class="mb-3">🔧 Consulting Services</h1>
+    <p class="lead">Partnering with teams to solve hard problems with clarity and precision.</p>
+
+    <h3>Services</h3>
+    <ul>
+        <li>Strategic modernization audits</li>
+        <li>Solution scoping for business needs</li>
+        <li>Technical leadership and coaching</li>
+    </ul>
+
+    <h3>Use Cases</h3>
+    <ul>
+        <li>Small business pivoting to cloud</li>
+        <li>Integrating AI tools into existing workflows</li>
+        <li>Evaluating system upgrades or legacy migrations</li>
+    </ul>
+
+    <a class="btn btn-primary btn-lg mt-4" href="mailto:@ContactEmail?subject=Discovery%20Session%20Request">Book a discovery session</a>
+</div>
+
+@code {
+    protected override string FilePath => "Pages/Consulting/Consulting.razor";
+}

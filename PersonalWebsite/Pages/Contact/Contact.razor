@@ -1,0 +1,37 @@
+@page "/contact"
+@using PersonalWebsite.Components.GitHubLink
+@inherits BasePage
+
+<PageTitle>Mark J. Hogan - Contact</PageTitle>
+
+<div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <ul>
+        <li>LinkedIn:<a href="@LinkedInProfile" target="_blank" rel="noopener noreferrer">@LinkedInProfile</a></li>
+        <li>Personal Website: <a href="https://krazkjn.github.io/my-personal-react-website/" target="_blank">Personal Website in React</a></li>
+        <li>Projects on LinkedIn: <a href="@LinkedInProfile/details/projects/" target="_blank">My Projects</a></li>
+        <li>Blog on LinkedIn: <a href="@LinkedInProfile/recent-activity/articles/" target="_blank">My Blog Articles</a></li>
+        <li>GitHub: <a href="@GitHubProfile" target="_blank">@GitHubProfile</a></li>
+        <li>Email: <a href="mailto:@ContactEmail">@ContactEmail</a></li>
+        @if (!string.IsNullOrEmpty(ContactPhone))
+        {
+            <li>Phone: <a href="tel:@ContactPhone">@ContactPhone</a></li>
+        }
+        @if (!string.IsNullOrEmpty(TwitterProfile))
+        {
+            <li>Twitter: <a href="@TwitterProfile" target="_blank">@TwitterProfile</a></li>
+        }
+        @if (!string.IsNullOrEmpty(FacebookProfile))
+        {
+            <li>Facebook: <a href="@FacebookProfile" target="_blank">@FacebookProfile</a></li>
+        }
+        @if (!string.IsNullOrEmpty(InstagramProfile))
+        {
+            <li>Instagram: <a href="@InstagramProfile" target="_blank">@InstagramProfile</a></li>
+        }
+    </ul>
+</div>
+
+@code {
+    protected override string FilePath => "Pages/Contact/Contact.razor";
+}

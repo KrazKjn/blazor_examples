@@ -1,0 +1,54 @@
+@page "/myblogs"
+@using PersonalWebsite.Components
+@using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.TextFormatter
+@inherits BaseDataPage<BlogPost>
+
+<PageTitle>Mark J. Hogan - My Blogs</PageTitle>
+
+<div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <h2>My Blogs</h2>
+
+    @if (Items == null)
+    {
+        <p>Loading Blog posts...</p>
+    }
+    else
+    {
+        @foreach (var post in Items)
+        {
+            <h3>@post.Title</h3>
+            <div class="recommendation@(isOdd ? " reverse" : "")">
+                @* // isMobile *@
+                <div class="image-container-@(isOdd ? "left" : "right")">
+                    @if (!string.IsNullOrWhiteSpace(post.ImageUrl))
+                    {
+                        <img src="@GetImagePath(post.ImageUrl)" class="rounded-3 image-url-@(isOdd ? "left" : "right")" />
+                    }
+                    <a href="@post.Link" target="_blank">Read More</a>
+                </div>
+                <TextFormatter Content="@post.Summary" QuoteText="false" />
+            </div>
+            <br />
+            isOdd = !isOdd;
+        }
+    }
+</div>
+
+@code {
+    protected override string FilePath => "Pages/MyBlogs/MyBlogs.razor";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            await LoadDataAsync("data/blogposts.json");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}

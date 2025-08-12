@@ -1,0 +1,54 @@
+@page "/myrecommendations"
+@using PersonalWebsite.Components
+@using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.TextFormatter
+@inherits BaseDataPage<Recommendation>
+
+<PageTitle>Mark J. Hogan - My Recommendations</PageTitle>
+
+<div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <h2>What People Say About Me</h2>
+
+    @if (Items == null)
+    {
+        <p>Loading recommendations...</p>
+    }
+    else
+    {
+        <div class="recommendations">
+        @foreach (var recommendation in Items)
+        {
+            <div class="recommendation@(isOdd ? " reverse" : "")">
+                <img src="@GetImagePath(recommendation.ImageUrl)" alt="(@recommendation.ImageAlt ?? @recommendation.Author)" class="rounded-circle image-url-@(isOdd ? "left" : "right")" />
+                <blockquote>
+                    <TextFormatter Content="@recommendation.TextBody" QuoteText="true" />
+                    <footer>
+                        <a href="@recommendation.Link" target="_blank" rel="noopener noreferrer" class="link-@(isOdd ? "left" : "right")">
+                            - @recommendation.Author
+                        </a>
+                    </footer>
+                </blockquote>
+            </div>
+            isOdd = !isOdd;
+        }
+        </div>
+    }
+</div>
+
+@code {
+    protected override string FilePath => "Pages/MyRecommendations/MyRecommendations.razor";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            await LoadDataAsync("data/recommendations.json");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
