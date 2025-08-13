@@ -38,6 +38,8 @@ else
         { "contact", "/contact" },
         { "curriculum-samples", "/curriculum-samples" },
         { "infrastructure-legacy-systems-engineering-addendum", "/infrastructure-legacy-systems-engineering-addendum" },
+        { "it-works", "/it-works" },
+        { "itworks", "/it-works" },
         { "legacy-profile", "/legacy-profile" },
         { "legacy-profile-document", "/legacy-profile-document" },
         { "myblogs", "/myblogs" },
@@ -68,7 +70,8 @@ else
         // Direct match
         if (knownRoutes.TryGetValue(path, out var target))
         {
-            redirectTarget = $"{baseHref}{target}";
+            //redirectTarget = $"{baseHref}{target}";
+            redirectTarget = $"{target}";
             Navigation.NavigateTo(redirectTarget);
             return;
         }
@@ -77,7 +80,8 @@ else
         suggestedTarget = FindClosestMatch(path, knownRoutes.Keys);
         if (suggestedTarget == "/")
         {
-            redirectTarget = $"{baseHref}{suggestedTarget}";
+            //redirectTarget = $"{baseHref}{suggestedTarget}";
+            redirectTarget = $"{suggestedTarget}";
             Navigation.NavigateTo(redirectTarget);
             return;
         }
