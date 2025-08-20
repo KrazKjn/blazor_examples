@@ -5,34 +5,58 @@
 
 <PageTitle>Mark J. Hogan - Professional Summary</PageTitle>
 
+<script>
+  function openModal(pdfUrl) {
+    const modal = document.getElementById('pdfModal');
+    const frame = document.getElementById('pdfFrame');
+    frame.src = pdfUrl;
+    modal.style.display = 'block';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('pdfModal');
+    const frame = document.getElementById('pdfFrame');
+    modal.style.display = 'none';
+    frame.src = ''; // Clear to stop loading
+  }
+
+  // Optional: Close modal when clicking outside content
+  window.onclick = function(event) {
+    const modal = document.getElementById('pdfModal');
+    if (event.target === modal) {
+      closeModal();
+    }
+  };
+</script>
+
 <div class="container">
     <GitHubLink FullURL="@GitHubLinkUrl" />
     <h1>🧠 Professional Summary</h1>
     <ul>
-        <li><a href="#overview">Overview</a></li>
-        <li><a href="#expertise_approach">🚀 Expertise & Approach</a></li>
-        <li><a href="#skills">🧰 Core Skills</a></li>
-        <li><a href="#accomplishments">🌟 Selected Accomplishments</a></li>
-        <li><a href="#experience">🧭 Career Journey</a></li>
-        <li><a href="#education">🎓 Education</a></li>
-        <li><a href="#connect">📬 Let’s Connect & Collaborate</a></li>
-        <li><a href="problem-solving-profile">
+        <li><a href="professionalsummary#overview">🧾 Overview</a></li>
+        <li><a href="professionalsummary#expertise_approach">🛠️ Expertise & Approach</a></li>
+        <li><a href="professionalsummary#skills">🧰 Core Skills</a></li>
+        <li><a href="professionalsummary#accomplishments">🌟 Selected Accomplishments</a></li>
+        <li><a href="professionalsummary#experience">🧭 Career Journey</a></li>
+        <li><a href="professionalsummary#education">🎓 Education</a></li>
+        <li><a href="professionalsummary#connect">📬 Let’s Connect & Collaborate</a></li>
+        <li><a href="professionalsummaryproblem-solving-profile">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                 <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"/>
             </svg> Real-World Problem Solving</a>
         </li>
     </ul>
     <p id="overview">
-        Results-driven Senior Software Engineer and Engineering Leader with 20+ years of experience architecting scalable solutions and guiding teams in healthcare, enterprise SaaS, and industrial domains.
+        🧾 Results-driven Senior Software Engineer and Engineering Leader with 20+ years of experience architecting scalable solutions and guiding teams in healthcare, enterprise SaaS, and industrial domains.
     </p>
     <p>
-        Proven success in zero-defect releases, modernization, and technical mentorship across distributed environments. Skilled in Microsoft .NET, REST/SOAP services, real-time systems, and leveraging AI tools like Copilot to optimize delivery.
+        🏆 Proven success in zero-defect releases, modernization, and technical mentorship across distributed environments. Skilled in Microsoft .NET, REST/SOAP services, real-time systems, and leveraging AI tools like Copilot to optimize delivery.
     </p>
     <p>
-        Passionate about shaping system architecture, mentoring engineers, and building platforms that prioritize reliability, interoperability, and user empathy.
+        🏗️ Passionate about shaping system architecture, mentoring engineers, and building platforms that prioritize reliability, interoperability, and user empathy.
     </p>
 
-    <h2 id="expertise_approach">� Expertise & Approach</h2>
+    <h2 id="expertise_approach">🛠️ Expertise & Approach</h2>
     <ul>
         <li><strong>Technical Skills:</strong> Microsoft .NET (C#, VB, C++), REST/SOAP Web Services, ASP.NET, SQL Server, T-SQL, Scripting, Multithreaded Development, Windows API, React, GitHub Actions, Copilot</li>
         <li><strong>Soft Skills:</strong> Team Leadership, Communication, Root Cause Analysis, Agile/SAFe Facilitation, QA and DevOps Alignment</li>
@@ -43,35 +67,59 @@
         <div>
             <h4>Technical Skills</h4>
             <ul>
-                <li>Microsoft .NET (C#, VB, C++)</li>
-                <li>REST/SOAP Web Services</li>
-                <li>ASP.NET, SQL Server, T-SQL</li>
-                <li>Scripting & Multithreaded Development</li>
-                <li>Windows API, React, GitHub Actions</li>
-                <li>Copilot & AI-assisted development</li>
-            </ul>
-            </div>
+                <!-- Core Development Platforms -->
+                <li>Microsoft .NET Ecosystem (C#, VB.NET, C++)</li>
+                <li>ASP.NET, Windows API, SQL Server (T-SQL)</li>
+                <li>JavaScript Stack: React, TypeScript, Node.js</li>
+                <li>Python & Scripting Languages (JSON, YAML, XML)</li>
+                <li>Multithreaded Development & Automation Scripting</li>
 
-            <div>
-            <h4>Soft Skills</h4>
+                <!-- DevOps & CI/CD -->
+                <li>CI/CD Pipelines: Jenkins, Azure DevOps, GitHub Actions</li>
+                <li>Version Control: Git, GitHub, Bitbucket, GitFlow</li>
+
+                <!-- APIs & Integration -->
+                <li>RESTful & SOAP Web Services</li>
+                <li>Copilot & AI-assisted Development Workflows</li>
+
+                <!-- Project & Team Tools -->
+                <li>Agile Tooling: Jira, Confluence, Team Foundation Server</li>
+            </ul>
+        </div>
+
+        <div>
+        <h4>Soft Skills</h4>
             <ul>
-                <li>Team Leadership</li>
-                <li>Clear Communication</li>
-                <li>Root Cause Analysis</li>
-                <li>Agile/SAFe Facilitation</li>
-                <li>QA and DevOps Alignment</li>
-            </ul>
-            </div>
+                <!-- Leadership & Mentorship -->
+                <li>Strategic Team Leadership across cross-functional initiatives</li>
+                <li>Mentoring Engineers at Individual and Team Levels</li>
+                <li>Fostering Growth through Technical Coaching and Career Development</li>
 
-            <div>
+                <!-- Communication & Collaboration -->
+                <li>Clear, Contextual Communication with Stakeholders and Teams</li>
+                <li>Facilitating Agile and SAFe Ceremonies with Purpose and Precision</li>
+                <li>Driving QA–DevOps Alignment for Seamless Delivery Pipelines</li>
+
+                <!-- Problem Solving & Analysis -->
+                <li>Root Cause Analysis with a Focus on Long-Term Stability</li>
+                <li>Translating Complex Technical Challenges into Actionable Solutions</li>
+            </ul>
+        </div>
+
+        <div>
             <h4>Delivery Methodologies</h4>
             <ul>
-                <li>Agile (Scrum, SAFe)</li>
-                <li>Program Increment (PI) Planning</li>
-                <li>CI/CD Automation</li>
-                <li>Zero-Defect Release Strategy</li>
-                <li>TDD / CDD Practices</li>
-                <li>Backend-for-Frontend (BFF) Architecture</li>
+                <!-- Agile & Planning Frameworks -->
+                <li>Agile Delivery (Scrum, SAFe) with Scalable Team Facilitation</li>
+                <li>Program Increment (PI) Planning for Cross-Team Alignment</li>
+
+                <!-- Automation & Quality Strategy -->
+                <li>CI/CD Pipeline Automation for Reliable, Repeatable Deployments</li>
+                <li>Zero-Defect Release Strategy through Proactive QA Integration</li>
+
+                <!-- Testing & Development Practices -->
+                <li>Test-Driven Development (TDD) and Context-Driven Development (CDD)</li>
+                <li>Backend-for-Frontend (BFF) Architecture for Optimized API Consumption</li>
             </ul>
         </div>
     </div>
@@ -94,14 +142,52 @@
     <p>Built and deployed the IT Works suite for system automation, configuration modeling, and technician workflow efficiency</p>
 
     <h3><strong>Texaco, Inc.</strong> Jan 1997 – Mar 1999</h3>
-    <p>Implemented real-time distributed control systems and optimized refresh cycle workflows with a plant-wide desktop solution</p>
+    <p>
+        Implemented real-time distributed control systems and optimized refresh cycle workflows with a plant-wide desktop solution
+        <a href="/legacy-engineering/texaco" target="_blank" rel="noopener">Explore the full legacy story →</a>
+    </p>
 
     <h2 id="education">🎓 Education</h2>
-    <ul>
-        <li>B.S. in Mathematics – Nicholls State University</li>
-        <li>B.S. in Computer Science – Nicholls State University</li>
-    </ul>
+    <div class="education-entry">
+        <h3>B.S. in Mathematics <span>– Nicholls State University (2024)</span></h3>
+        <ul>
+            <li><a href="#" onclick="openModal('files/NSU - 2024 - Diploma.pdf'); return false;">📄 View Diploma</a></li>
+            <li><a href="#" onclick="openModal('files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf'); return false;">📑 View Transcript</a></li>
+        </ul>
+        <p><strong>Highlights:</strong> GPA 3.13, Concentration in Mathematics–Computer Science, 164 earned hours</p>
+    </div>
+
+    <div class="education-entry">
+        <h3>B.S. in Computer Science <span>– Nicholls State University (1988)</span></h3>
+        <ul>
+            <li><a href="#" onclick="openModal('files/NSU - 1988 - Diploma.pdf'); return false;">📄 View Diploma</a></li>
+            <li><a href="#" onclick="openModal('files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf'); return false;">📑 View Transcript</a></li>
+        </ul>
+        <p><strong>Highlights:</strong> GPA 3.13, Minor in Mathematics & General Business, Internship in Computer Science</p>
+    </div>
+
+    <div class="education-entry">
+        <h3>Graduate Coursework in Business Administration <span>– Nicholls State University (1989–1990)</span></h3>
+        <ul>
+            <li><a href="#" onclick="openModal('files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf'); return false;">📑 View Transcript</a></li>
+        </ul>
+        <p><strong>Highlights:</strong> MBA-level coursework in Portfolio Management, Organizational Theory, and Business Research</p>
+    </div>
+
+    <div class="education-entry">
+        <h3>Graduate Coursework in Computer Science <span>– Tulane University (1991–1992)</span></h3>
+        <ul>
+            <li><a href="#" onclick="openModal('files/Tulane - 1992.pdf'); return false;">📑 View Transcript</a></li>
+        </ul>
+        <p><strong>Highlights:</strong> GPA 3.835, Courses in Analysis of Algorithms and Programming Languages</p>
+    </div>
     <CallToAction />
+</div>
+<div id="pdfModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <iframe id="pdfFrame" class="modal-iframe" src="" frameborder="0"></iframe>
+  </div>
 </div>
 
 @code {
