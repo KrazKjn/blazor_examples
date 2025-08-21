@@ -115,4 +115,6 @@ public class BasePage : ComponentBase
 
         return new string(input.Where(c => c <= 127).ToArray());
     }
+
+    protected static MarkupString RenderHtml(string? content) => new MarkupString(content ?? string.Empty);
 }
