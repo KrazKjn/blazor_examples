@@ -3,7 +3,6 @@ using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using PersonalWebsite.Components.GitHubLink;
 
-
 public class BasePage : ComponentBase
 {
     [Inject]
@@ -108,7 +107,7 @@ public class BasePage : ComponentBase
             return $"{baseHref}{src}";
         return src;
     }
-    
+
     protected static string RemoveUnicode(string input)
     {
         if (string.IsNullOrEmpty(input))

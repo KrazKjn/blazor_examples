@@ -1,33 +1,11 @@
 ﻿@page "/professionalsummary"
 @using PersonalWebsite.Components.GitHubLink
 @using PersonalWebsite.Components.CallToAction
+@using PersonalWebsite.Components.PdfModal
+@using PersonalWebsite.Components.PdfLink
 @inherits BasePage
 
 <PageTitle>Mark J. Hogan - Professional Summary</PageTitle>
-
-<script>
-  function openModal(pdfUrl) {
-    const modal = document.getElementById('pdfModal');
-    const frame = document.getElementById('pdfFrame');
-    frame.src = pdfUrl;
-    modal.style.display = 'block';
-  }
-
-  function closeModal() {
-    const modal = document.getElementById('pdfModal');
-    const frame = document.getElementById('pdfFrame');
-    modal.style.display = 'none';
-    frame.src = ''; // Clear to stop loading
-  }
-
-  // Optional: Close modal when clicking outside content
-  window.onclick = function(event) {
-    const modal = document.getElementById('pdfModal');
-    if (event.target === modal) {
-      closeModal();
-    }
-  };
-</script>
 
 <div class="container">
     <GitHubLink FullURL="@GitHubLinkUrl" />
@@ -144,15 +122,33 @@
     <h3><strong>Texaco, Inc.</strong> Jan 1997 – Mar 1999</h3>
     <p>
         Implemented real-time distributed control systems and optimized refresh cycle workflows with a plant-wide desktop solution
-        <a href="legacy-engineering/texaco" target="_blank" rel="noopener">Explore the full legacy story →</a>
+        <PdfLink 
+            FilePath="files/2025 - Strategic Systems Engineering Texaco.pdf"
+            Title="Strategic Systems Engineering – Texaco"
+            LinkText="View full legacy story"
+            PdfModal="@pdfModalSysEngTexaco" />            
     </p>
 
     <h2 id="education">🎓 Education</h2>
     <div class="education-entry">
         <h3>B.S. in Mathematics <span>– Nicholls State University (2024)</span></h3>
         <ul>
-            <li><a href="#" onclick="openModal('files/NSU - 2024 - Diploma.pdf'); return false;">📄 View Diploma</a></li>
-            <li><a href="#" onclick="openModal('files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf'); return false;">📑 View Transcript</a></li>
+            <li>
+                <PdfLink 
+                    FilePath="files/NSU - 2024 - Diploma.pdf"
+                    Title="2024 - B.S. in Mathematics Diploma"
+                    LinkText="📄 View Diploma"
+                    RenderAs="link"
+                    PdfModal="@pdfModalNSUDiploma2024" />
+            </li>
+            <li>
+                <PdfLink 
+                    FilePath="files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf"
+                    Title="2024 - NSU Transcipt"
+                    LinkText="📑 View Transcipt"
+                    RenderAs="link"
+                    PdfModal="@pdfModalNSUTranscript" />
+            </li>
         </ul>
         <p><strong>Highlights:</strong> GPA 3.13, Concentration in Mathematics–Computer Science, 164 earned hours</p>
     </div>
@@ -160,8 +156,22 @@
     <div class="education-entry">
         <h3>B.S. in Computer Science <span>– Nicholls State University (1988)</span></h3>
         <ul>
-            <li><a href="#" onclick="openModal('files/NSU - 1988 - Diploma.pdf'); return false;">📄 View Diploma</a></li>
-            <li><a href="#" onclick="openModal('files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf'); return false;">📑 View Transcript</a></li>
+            <li>
+                <PdfLink 
+                    FilePath="files/NSU - 1988 - Diploma.pdf"
+                    Title="1988 - B.S. in Computer Science Diploma"
+                    LinkText="📄 View Diploma"
+                    RenderAs="link"
+                    PdfModal="@pdfModalNSUDiploma1988" />
+            </li>
+            <li>
+                <PdfLink 
+                    FilePath="files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf"
+                    Title="2024 - NSU Transcipt"
+                    LinkText="📑 View Transcipt"
+                    RenderAs="link"
+                    PdfModal="@pdfModalNSUTranscript" />
+            </li>
         </ul>
         <p><strong>Highlights:</strong> GPA 3.13, Minor in Mathematics & General Business, Internship in Computer Science</p>
     </div>
@@ -169,7 +179,14 @@
     <div class="education-entry">
         <h3>Graduate Coursework in Business Administration <span>– Nicholls State University (1989–1990)</span></h3>
         <ul>
-            <li><a href="#" onclick="openModal('files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf'); return false;">📑 View Transcript</a></li>
+            <li>
+                <PdfLink 
+                    FilePath="files/NSU - 2024 - No Password 2025-04-23 20_32_56.pdf"
+                    Title="2024 - NSU Transcipt"
+                    LinkText="📑 View Transcipt"
+                    RenderAs="link"
+                    PdfModal="@pdfModalNSUTranscript" />
+            </li>
         </ul>
         <p><strong>Highlights:</strong> MBA-level coursework in Portfolio Management, Organizational Theory, and Business Research</p>
     </div>
@@ -177,19 +194,30 @@
     <div class="education-entry">
         <h3>Graduate Coursework in Computer Science <span>– Tulane University (1991–1992)</span></h3>
         <ul>
-            <li><a href="#" onclick="openModal('files/Tulane - 1992.pdf'); return false;">📑 View Transcript</a></li>
+            <li>
+                <PdfLink 
+                    FilePath="files/Tulane - 1992.pdf"
+                    Title="1992 - Tulane Transcript"
+                    LinkText="📑 View Transcript"
+                    RenderAs="link"
+                    PdfModal="@pdfModalTulaneTranscript" />
+            </li>
         </ul>
         <p><strong>Highlights:</strong> GPA 3.835, Courses in Analysis of Algorithms and Programming Languages</p>
     </div>
     <CallToAction />
-</div>
-<div id="pdfModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <iframe id="pdfFrame" class="modal-iframe" src="" frameborder="0"></iframe>
-  </div>
+    <PdfModal @ref="pdfModalSysEngTexaco" />
+    <PdfModal @ref="pdfModalNSUDiploma2024" />
+    <PdfModal @ref="pdfModalNSUDiploma1988" />
+    <PdfModal @ref="pdfModalNSUTranscript" />
+    <PdfModal @ref="pdfModalTulaneTranscript" />
 </div>
 
 @code {
     protected override string FilePath => "Pages/ProfessionalSummary/ProfessionalSummary.razor";
+    private PdfModal? pdfModalSysEngTexaco;
+    private PdfModal? pdfModalNSUDiploma1988;
+    private PdfModal? pdfModalNSUDiploma2024;
+    private PdfModal? pdfModalNSUTranscript;
+    private PdfModal? pdfModalTulaneTranscript;
 }

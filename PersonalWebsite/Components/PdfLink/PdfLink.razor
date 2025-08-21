@@ -1,0 +1,40 @@
+@using PersonalWebsite.Components.PdfModal
+@inject ILogger<PdfLink> Logger
+@inject IJSRuntime JS
+
+@if (RenderAs == "link")
+{
+    <a href="#" class="link-button" @onclick:preventDefault="true" @onclick="OpenModal">
+        @LinkText
+    </a>
+}
+else
+{
+    <button class="btn btn-primary btn-lg mt-3" @onclick="OpenModal">
+        @LinkText
+    </button>
+}
+
+@code {
+    [Parameter] public string FilePath { get; set; } = string.Empty;
+    [Parameter] public string Title { get; set; } = "PDF Document";
+    [Parameter] public string LinkText { get; set; } = "View PDF";
+    [Parameter] public PdfModal? PdfModal { get; set; }
+
+    // "link" or "button"
+    [Parameter] public string RenderAs { get; set; } = "button";
+   
+    private async void OpenModal()
+    {
+        Logger.LogInformation("PdfLink clicked. FilePath: {FilePath}, Title: {Title}", FilePath, Title);
+
+        if (PdfModal == null)
+        {
+            await JS.InvokeVoidAsync("alert", "Modal not initialized.");
+            Logger.LogWarning("PdfModal reference is null. Modal cannot be opened.");
+            return;
+        }
+
+        PdfModal.Open(FilePath, Title);
+        Logger.LogInformation("PdfModal.Open() called successfully.");    }
+}
