@@ -9,7 +9,9 @@
 
         if (!string.IsNullOrWhiteSpace(redirect))
         {
-            Navigation.NavigateTo($"/{redirect}", forceLoad: false);
+            // Trim leading slashes to avoid double-slash
+            var sanitized = redirect.TrimStart('/');
+            Navigation.NavigateTo($"/{sanitized}", forceLoad: false, replace: true);
         }
         else
         {
