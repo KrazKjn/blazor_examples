@@ -1,0 +1,19 @@
+@inject NavigationManager Navigation
+
+@code {
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var redirect = query.Get("redirect");
+
+        if (!string.IsNullOrWhiteSpace(redirect))
+        {
+            Navigation.NavigateTo($"/{redirect}", forceLoad: false);
+        }
+        else
+        {
+            Navigation.NavigateTo("/", forceLoad: false);
+        }
+    }
+}
