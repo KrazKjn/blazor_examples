@@ -56,13 +56,14 @@
                                     @if (string.IsNullOrWhiteSpace(@subProject.ImageUrl))
                                     {
                                         <span>@subProject.Name</span>
+                                        <TextFormatter Content="@subProject.Description" QuoteText="false" />
                                     }
                                     else
                                     {
                                         <img src="@GetImagePath(@subProject.ImageUrl)" class="rounded-3 image-url-left-small" />
+                                        <TextFormatter Content="@($"{subProject.Name} - {subProject.Description}")" QuoteText="false" />
                                     }
                                     </a>
-                                    <TextFormatter Content="@subProject.Description" QuoteText="false" />
                                 </li>
                             }
                         </ul>
