@@ -25,9 +25,10 @@ public class BasePage : ComponentBase
     protected string GitHubLinkUrl => $"https://github.com/KrazKjn/blazor_examples/tree/main/PersonalWebsite/{FilePath}";
 
     // Shared method
-    protected void LogMessage(string message)
+    protected async void LogMessage(string message)
     {
         Console.WriteLine($"[BasePage Log]: {message}");
+        await LogToConsole(message);
     }
 
     // Lifecycle method override (optional)
@@ -50,7 +51,15 @@ public class BasePage : ComponentBase
     {
         try
         {
-            var configJson = await System.IO.File.ReadAllTextAsync("data/siteconfig.json");
+            string configJson = string.Empty;
+            if (System.IO.File.Exists("data/siteconfig.json"))
+            {
+                configJson = await System.IO.File.ReadAllTextAsync("data/siteconfig.json");
+            }
+            else if (System.IO.File.Exists("/data/siteconfig.json"))
+            {
+                configJson = await System.IO.File.ReadAllTextAsync("/data/siteconfig.json");
+            }
             var config = System.Text.Json.JsonDocument.Parse(configJson);
             if (config.RootElement.TryGetProperty("ContactEmail", out var emailProp))
             {
