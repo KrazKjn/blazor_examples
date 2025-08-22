@@ -10,9 +10,15 @@
 {
     <p>Redirecting to <strong>@redirectTarget</strong>...</p>
 }
-else if (suggestedTarget != null)
+else if (suggestedTargets.Count > 1)
 {
-    <p>Did you mean <a href="@suggestedTarget">@suggestedTarget</a>?</p>
+    <p>Did you mean one of the following?</p>
+    <ul>
+        @foreach (var match in suggestedTargets)
+        {
+            <li><a href="@match.Path">@match.Title</a></li>
+        }
+    </ul>
 }
 else
 {
@@ -26,7 +32,7 @@ else
 
     protected override string FilePath => "Pages/NotFound/NotFound.razor";
     private string? redirectTarget;
-    private string? suggestedTarget;
+    private List<(string Title, string Path)> suggestedTargets = new();
 
     private static Dictionary<string, string> knownRoutes = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -60,15 +66,49 @@ else
         { "", "/" }
     };
 
-    protected override void OnInitialized()
+    private static readonly Dictionary<string, string> routeTitles = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "ai-training", "AI Training & Workshops" },
+        { "connect-collaborate", "Connect & Collaborate" },
+        { "consulting", "Consulting Services" },
+        { "contact", "Contact Me" },
+        { "curriculum-samples", "Curriculum Samples" },
+        { "infrastructure-legacy-systems-engineering-addendum", "Infrastructure & Legacy Systems Addendum" },
+        { "it-works", "IT Works Suite" },
+        { "legacy-engineering-texaco", "Legacy Engineering at Texaco" },
+        { "legacy-profile", "Legacy Profile" },
+        { "legacy-profile-document", "Legacy Profile Document" },
+        { "myblogs", "My Blog Posts" },
+        { "myprojects", "My Projects" },
+        { "myrecommendations", "My Recommendations" },
+        { "offerings", "Service Offerings" },
+        { "problem-solving-profile-document", "Problem Solving Profile Document" },
+        { "professionalsummary", "Professional Summary" },
+        { "resume-architect", "Architect Resume" },
+        { "resume-engineer", "Engineer Resume" },
+        { "resume-manager", "Manager Resume" },
+        { "resumes", "All Resumes" },
+        { "software", "Software Portfolio" },
+        { "version", "Version Info" },
+        { "workflow-modernization", "Workflow Modernization" },
+        { "home", "Home" },
+        { "", "Home" }
+    };
+
+    protected override async Task OnInitializedAsync()
     {
         var uri = new Uri(Navigation.Uri);
         var fullPath = uri.AbsolutePath.Trim('/');
         var query = uri.Query;       // Includes leading '?'
         var fragment = uri.Fragment; // Includes leading '#'
 
+        await LogToConsole($"NotFound activated for: {uri} ...");
+        await LogToConsole($"fullPath: {fullPath} ...");
+        await LogToConsole($"query: {query} ...");
+        await LogToConsole($"fragment: {fragment} ...");
         if (string.IsNullOrWhiteSpace(path))
         {
+            await LogToConsole($"Navigating to query (No Path) {query}{fragment} ...");
             Navigation.NavigateTo($"/{query}{fragment}");
             return;
         }
@@ -76,24 +116,35 @@ else
         // Direct match
         if (knownRoutes.TryGetValue(path, out var target))
         {
-            //redirectTarget = $"{baseHref}{target}";
             redirectTarget = $"{target}{query}{fragment}";
+            await LogToConsole($"Navigating to Direct Match {redirectTarget} ...");
             Navigation.NavigateTo(redirectTarget);
             return;
         }
 
         // Fuzzy match
-        suggestedTarget = FindClosestMatch(path, knownRoutes.Keys);
-        if (suggestedTarget == "/")
+        await LogToConsole($"FindClosestMatch: {path} ...");
+        suggestedTargets = FindClosestMatches(path, knownRoutes);
+        await LogToConsole($"FindClosestMatch: {path} found {string.Join(", ", suggestedTargets.Select(match => match.Title))} ...");
+        if (suggestedTargets.Count == 1)
         {
-            //redirectTarget = $"{baseHref}{suggestedTarget}";
-            redirectTarget = $"{suggestedTarget}{query}{fragment}";
+            var singleTarget = suggestedTargets[0].Path;
+            redirectTarget = $"{singleTarget}{query}{fragment}";
+            await LogToConsole($"Navigating to Single Closest Match {redirectTarget} ...");
             Navigation.NavigateTo(redirectTarget);
             return;
         }
+        if (suggestedTargets.Count == 0)
+        {
+            await LogToConsole($"NotFound dropped out. No suggestions: {uri} ...");
+        }
+        else
+        {
+            await LogToConsole($"NotFound dropped out. Multiple suggestions: {uri} ...");
+        }
     }
 
-    private static string? FindClosestMatch(string input, IEnumerable<string> options)
+    @* private static string? FindClosestMatch(string input, IEnumerable<string> options)
     {
         return options
             .Select(option => new { option, distance = LevenshteinDistance(input, option) })
@@ -101,6 +152,41 @@ else
             .FirstOrDefault()?.option is string bestMatch && bestMatch != input
             ? knownRoutes[bestMatch]
             : null;
+    } *@
+
+    private static List<(string Title, string Path)> FindClosestMatches(string input, Dictionary<string, string> routes)
+    {
+        string Normalize(string s) =>
+            new string(s.Where(char.IsLetterOrDigit).ToArray()).ToLowerInvariant();
+
+        var normalizedInput = Normalize(input);
+
+        // Prefix matches
+        var prefixMatches = routes
+            .Where(kvp => Normalize(kvp.Key).StartsWith(normalizedInput))
+            .Select(kvp => (
+                Title: routeTitles.TryGetValue(kvp.Key, out var title) ? title : kvp.Key,
+                Path: kvp.Value))
+            .ToList();
+
+        if (prefixMatches.Any())
+            return prefixMatches;
+
+        // Levenshtein matches (top 3)
+        var fuzzyMatches = routes
+            .Select(kvp => new {
+                kvp.Key,
+                kvp.Value,
+                distance = LevenshteinDistance(normalizedInput, Normalize(kvp.Key))
+            })
+            .OrderBy(x => x.distance)
+            .Take(3)
+            .Select(x => (
+                Title: routeTitles.TryGetValue(x.Key, out var title) ? title : x.Key,
+                Path: x.Value))
+            .ToList();
+
+        return fuzzyMatches;
     }
 
     // Simple Levenshtein Distance implementation

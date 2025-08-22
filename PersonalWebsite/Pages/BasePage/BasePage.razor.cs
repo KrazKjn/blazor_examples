@@ -117,4 +117,7 @@ public class BasePage : ComponentBase
     }
 
     protected static MarkupString RenderHtml(string? content) => new MarkupString(content ?? string.Empty);
+
+    protected async Task LogToConsole(string message) =>
+            await JSRuntime!.InvokeVoidAsync("consoleLogger.log", $"[{GetType().Name}] {message}");
 }

@@ -1,8 +1,6 @@
 ﻿@using PersonalWebsite.Pages.NotFound
 @using PersonalWebsite.Components.Layout
 
-<RedirectFromQuery />
-
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout)" />
