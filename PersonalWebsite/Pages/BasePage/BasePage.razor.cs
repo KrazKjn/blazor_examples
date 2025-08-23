@@ -12,6 +12,7 @@ public class BasePage : ComponentBase
     protected string ContactEmail = "Mark.Hogan.La@outlook.com";
     protected string LinkedInProfile = "https://linkedin.com/in/MarkHoganInLa";
     protected string GitHubProfile = "https://github.com/KrazKjn";
+    protected string BasePath = "/";
     protected string ContactPhone = "+1 (504) 722-4459";
     protected string TwitterProfile = string.Empty;
     protected string FacebookProfile = string.Empty;
@@ -86,6 +87,10 @@ public class BasePage : ComponentBase
             {
                 GitHubProfile = gitHubProp.GetString() ?? GitHubProfile;
             }
+            if (config.RootElement.TryGetProperty("BasePath", out var basePath))
+            {
+                BasePath = basePath.GetString() ?? BasePath;
+            }
             if (config.RootElement.TryGetProperty("ContactPhone", out var phoneProp))
             {
                 ContactPhone = phoneProp.GetString() ?? ContactPhone;
@@ -143,4 +148,35 @@ public class BasePage : ComponentBase
 
     protected async Task LogToConsole(string message) =>
             await JSRuntime!.InvokeVoidAsync("consoleLogger.log", $"[{GetType().Name}] {message}");
+
+    protected string UrlBase(bool relativeUrl = true)
+    {
+        string result;
+
+        if (!string.IsNullOrEmpty(BasePath) && !string.IsNullOrEmpty(baseHref))
+        {
+            result = BasePath;
+        }
+        else if (!string.IsNullOrEmpty(BasePath))
+        {
+            result = BasePath;
+        }
+        else if (!string.IsNullOrEmpty(baseHref))
+        {
+            result = baseHref;
+        }
+        else
+        {
+            result = "/";
+        }
+
+        // Remove leading slash if relativeUrl is true and result starts with "/"
+        if (relativeUrl && result.StartsWith('/'))
+        {
+            result = result.Substring(1);
+        }
+
+        return result;
+    }
+
 }
