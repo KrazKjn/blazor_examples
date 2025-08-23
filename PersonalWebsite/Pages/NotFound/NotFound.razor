@@ -16,7 +16,7 @@ else if (suggestedTargets.Count > 1)
     <ul>
         @foreach (var match in suggestedTargets)
         {
-            <li><a href="@match.Path">@match.Title</a></li>
+            <li><a href="@($"{baseHref}/{match.Path}")">@match.Title</a></li>
         }
     </ul>
 }
@@ -108,15 +108,15 @@ else
         await LogToConsole($"fragment: {fragment} ...");
         if (string.IsNullOrWhiteSpace(path))
         {
-            await LogToConsole($"Navigating to query (No Path) {query}{fragment} ...");
-            Navigation.NavigateTo($"/{query}{fragment}");
+            await LogToConsole($"Navigating to query (No Path) {baseHref}/{query}{fragment} ...");
+            Navigation.NavigateTo($"{baseHref}/{query}{fragment}");
             return;
         }
 
         // Direct match
         if (knownRoutes.TryGetValue(path, out var target))
         {
-            redirectTarget = $"{target}{query}{fragment}";
+            redirectTarget = $"{baseHref}/{target}{query}{fragment}";
             await LogToConsole($"Navigating to Direct Match {redirectTarget} ...");
             Navigation.NavigateTo(redirectTarget);
             return;
@@ -129,7 +129,7 @@ else
         if (suggestedTargets.Count == 1)
         {
             var singleTarget = suggestedTargets[0].Path;
-            redirectTarget = $"{singleTarget}{query}{fragment}";
+            redirectTarget = $"{baseHref}/{singleTarget}{query}{fragment}";
             await LogToConsole($"Navigating to Single Closest Match {redirectTarget} ...");
             Navigation.NavigateTo(redirectTarget);
             return;
