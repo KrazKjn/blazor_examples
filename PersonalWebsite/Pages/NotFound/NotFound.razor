@@ -16,7 +16,12 @@ else if (suggestedTargets.Count > 1)
     <ul>
         @foreach (var match in suggestedTargets)
         {
-            <li><a href="@($"{UrlBase()}/{match.Path}")">@match.Title</a></li>
+            var detectedBasePath = UrlBase(false);
+            if (string.IsNullOrEmpty(detectedBasePath))
+            {
+                <li>ERROR: @($"[{detectedBasePath}] [{match.Path}] - [{match.Title}]")</li>
+            }
+            <li><a href="@($"{detectedBasePath}{match.Path}")">@match.Title</a></li>
         }
     </ul>
 }
@@ -101,6 +106,7 @@ else
         var fullPath = uri.AbsolutePath.Trim('/');
         var query = uri.Query;       // Includes leading '?'
         var fragment = uri.Fragment; // Includes leading '#'
+        var detectedBasePath = UrlBase(false);
 
         await LogToConsole($"NotFound activated for: {uri} ...");
         await LogToConsole($"fullPath: {fullPath} ...");
@@ -108,15 +114,15 @@ else
         await LogToConsole($"fragment: {fragment} ...");
         if (string.IsNullOrWhiteSpace(path))
         {
-            await LogToConsole($"Navigating to query (No Path) {UrlBase()}/{query}{fragment} ...");
-            Navigation.NavigateTo($"{UrlBase()}/{query}{fragment}");
+            await LogToConsole($"Navigating to query (No Path) {detectedBasePath}/{query}{fragment} ...");
+            Navigation.NavigateTo($"{detectedBasePath}/{query}{fragment}");
             return;
         }
 
         // Direct match
         if (knownRoutes.TryGetValue(path, out var target))
         {
-            redirectTarget = $"{UrlBase()}/{target}{query}{fragment}";
+            redirectTarget = $"{detectedBasePath}/{target}{query}{fragment}";
             await LogToConsole($"Navigating to Direct Match {redirectTarget} ...");
             Navigation.NavigateTo(redirectTarget);
             return;
@@ -129,7 +135,7 @@ else
         if (suggestedTargets.Count == 1)
         {
             var singleTarget = suggestedTargets[0].Path;
-            redirectTarget = $"{UrlBase()}/{singleTarget}{query}{fragment}";
+            redirectTarget = $"{detectedBasePath}/{singleTarget}{query}{fragment}";
             await LogToConsole($"Navigating to Single Closest Match {redirectTarget} ...");
             Navigation.NavigateTo(redirectTarget);
             return;
