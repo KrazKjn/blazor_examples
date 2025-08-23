@@ -1,5 +1,8 @@
 ﻿@using PersonalWebsite.Pages.NotFound
 @using PersonalWebsite.Components.Layout
+@using PersonalWebsite.Components.Diagnostics
+@inject NavigationManager Nav
+@inject IJSRuntime JS
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
@@ -10,7 +13,47 @@
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(Layout)">
             @* <p role="alert">Sorry, there's nothing at this address.</p> *@
+            <NotFoundLogger />
             <NotFound />
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(Nav.Uri);
+
+        // Parse query string
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        var redirectPath = query.Get("redirect");
+
+        // Parse fragment
+        var fragment = uri.Fragment?.TrimStart('#');
+
+        // Build final target
+        string target = string.Empty;
+
+        if (!string.IsNullOrEmpty(redirectPath))
+        {
+            target = redirectPath;
+        }
+        else if (!string.IsNullOrEmpty(fragment))
+        {
+            target = $"/{fragment}";
+        }
+
+        // Append fragment if both exist
+        if (!string.IsNullOrEmpty(redirectPath) && !string.IsNullOrEmpty(fragment))
+        {
+            target = $"{redirectPath}#{fragment}";
+        }
+
+        // Navigate if needed
+        if (!string.IsNullOrEmpty(target))
+        {
+            JS.InvokeVoidAsync("consoleLogger.log", $"Redirecting to: {target}");
+            Nav.NavigateTo(target, forceLoad: false, replace: true);
+        }
+    }
+}

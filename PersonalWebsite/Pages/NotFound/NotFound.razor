@@ -144,16 +144,6 @@ else
         }
     }
 
-    @* private static string? FindClosestMatch(string input, IEnumerable<string> options)
-    {
-        return options
-            .Select(option => new { option, distance = LevenshteinDistance(input, option) })
-            .OrderBy(x => x.distance)
-            .FirstOrDefault()?.option is string bestMatch && bestMatch != input
-            ? knownRoutes[bestMatch]
-            : null;
-    } *@
-
     private static List<(string Title, string Path)> FindClosestMatches(string input, Dictionary<string, string> routes)
     {
         string Normalize(string s) =>

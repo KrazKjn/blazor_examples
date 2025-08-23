@@ -1,0 +1,11 @@
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var path = Nav.Uri;
+        var timestamp = DateTime.Now.ToString("u");
+        await JS.InvokeVoidAsync("consoleLogger.warn", $"404 Not Found at {timestamp}: {path}");
+    }
+}
