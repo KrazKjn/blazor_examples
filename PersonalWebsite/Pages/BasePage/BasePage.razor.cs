@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using PersonalWebsite.Components.GitHubLink;
-
 public class BasePage : ComponentBase
 {
     [Inject]
@@ -52,15 +51,29 @@ public class BasePage : ComponentBase
         try
         {
             string configJson = string.Empty;
-            if (System.IO.File.Exists("data/siteconfig.json"))
+            try
             {
                 configJson = await System.IO.File.ReadAllTextAsync("data/siteconfig.json");
+                await LogToConsole("Loaded: data/siteconfig.json");
             }
-            else if (System.IO.File.Exists("/data/siteconfig.json"))
+            catch { }
+            if (string.IsNullOrEmpty(configJson))
             {
-                configJson = await System.IO.File.ReadAllTextAsync("/data/siteconfig.json");
+                try
+                {
+                    configJson = await System.IO.File.ReadAllTextAsync("/data/siteconfig.json");
+                    await LogToConsole("Loaded: /data/siteconfig.json");
+                } catch { }
             }
+            if (string.IsNullOrEmpty(configJson))
+            {
+                using var httpClient = new HttpClient();
+                configJson = await httpClient.GetStringAsync("https://krazkjn.github.io/my-personal-blazor-website/data/siteconfig.json");
+                await LogToConsole("Loaded: https://krazkjn.github.io/my-personal-blazor-website/data/siteconfig.json");
+            }
+            await LogToConsole($"siteconfig.json\n{configJson}");
             var config = System.Text.Json.JsonDocument.Parse(configJson);
+            await LogToConsole("Parsed json");
             if (config.RootElement.TryGetProperty("ContactEmail", out var emailProp))
             {
                 ContactEmail = emailProp.GetString() ?? ContactEmail;
@@ -89,6 +102,7 @@ public class BasePage : ComponentBase
             {
                 InstagramProfile = instagramProp.GetString() ?? InstagramProfile;
             }
+            await LogToConsole("Loaded SiteConfig.");
         }
         catch (Exception ex)
         {
