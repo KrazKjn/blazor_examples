@@ -148,35 +148,4 @@ public class BasePage : ComponentBase
 
     protected async Task LogToConsole(string message) =>
             await JSRuntime!.InvokeVoidAsync("consoleLogger.log", $"[{GetType().Name}] {message}");
-
-    protected string UrlBase(bool relativeUrl = true)
-    {
-        string result;
-
-        if (!string.IsNullOrEmpty(BasePath) && !string.IsNullOrEmpty(baseHref))
-        {
-            result = BasePath;
-        }
-        else if (!string.IsNullOrEmpty(BasePath))
-        {
-            result = BasePath;
-        }
-        else if (!string.IsNullOrEmpty(baseHref))
-        {
-            result = baseHref;
-        }
-        else
-        {
-            result = "/";
-        }
-
-        // Remove leading slash if relativeUrl is true and result starts with "/"
-        if (relativeUrl && result.StartsWith('/'))
-        {
-            result = result.Substring(1);
-        }
-
-        return result;
-    }
-
 }
