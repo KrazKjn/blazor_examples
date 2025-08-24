@@ -16,8 +16,6 @@ else if (suggestedTargets.Count > 1)
     <ul>
         @foreach (var match in suggestedTargets)
         {
-            LogToConsole($"Suggested match: Path = '{match.Path}', Title = '{match.Title}'");
-            
             <li>
                 <NavLink href="@match.Path" Match="NavLinkMatch.Prefix">
                     @match.Title
@@ -42,34 +40,34 @@ else
 
     private static Dictionary<string, string> knownRoutes = new(StringComparer.OrdinalIgnoreCase)
     {
-        { "ai-training", "/ai-training" },
-        { "training", "/ai-training" },
-        { "workshops", "/ai-training" },
-        { "connect-collaborate", "/connect-collaborate" },
-        { "consulting", "/consulting" },
-        { "contact", "/contact" },
-        { "curriculum-samples", "/curriculum-samples" },
-        { "infrastructure-legacy-systems-engineering-addendum", "/infrastructure-legacy-systems-engineering-addendum" },
-        { "it-works", "/it-works" },
-        { "itworks", "/it-works" },
-        { "legacy-engineering-texaco", "/legacy-engineering-texaco" },
-        { "legacy-profile", "/legacy-profile" },
-        { "legacy-profile-document", "/legacy-profile-document" },
-        { "myblogs", "/myblogs" },
-        { "myprojects", "/myprojects" },
-        { "myrecommendations", "/myrecommendations" },
-        { "offerings", "/offerings" },
-        { "problem-solving-profile-document", "/problem-solving-profile-document" },
-        { "professionalsummary", "/professionalsummary" },
-        { "resume-architect", "/resume-architect" },
-        { "resume-engineer", "/resume-engineer" },
-        { "resume-manager", "/resume-manager" },
-        { "resumes", "/resumes" },
-        { "software", "/software" },
-        { "version", "/version" },
-        { "workflow-modernization", "/workflow-modernization" },
-        { "home", "/" },
-        { "", "/" }
+        { "ai-training", "ai-training" },
+        { "training", "ai-training" },
+        { "workshops", "ai-training" },
+        { "connect-collaborate", "connect-collaborate" },
+        { "consulting", "consulting" },
+        { "contact", "contact" },
+        { "curriculum-samples", "curriculum-samples" },
+        { "infrastructure-legacy-systems-engineering-addendum", "infrastructure-legacy-systems-engineering-addendum" },
+        { "it-works", "it-works" },
+        { "itworks", "it-works" },
+        { "legacy-engineering-texaco", "legacy-engineering-texaco" },
+        { "legacy-profile", "legacy-profile" },
+        { "legacy-profile-document", "legacy-profile-document" },
+        { "myblogs", "myblogs" },
+        { "myprojects", "myprojects" },
+        { "myrecommendations", "myrecommendations" },
+        { "offerings", "offerings" },
+        { "problem-solving-profile-document", "problem-solving-profile-document" },
+        { "professionalsummary", "professionalsummary" },
+        { "resume-architect", "resume-architect" },
+        { "resume-engineer", "resume-engineer" },
+        { "resume-manager", "resume-manager" },
+        { "resumes", "resumes" },
+        { "software", "software" },
+        { "version", "version" },
+        { "workflow-modernization", "workflow-modernization" },
+        { "home", "" },
+        { "", "" }
     };
 
     private static readonly Dictionary<string, string> routeTitles = new(StringComparer.OrdinalIgnoreCase)
