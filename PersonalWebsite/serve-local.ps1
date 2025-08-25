@@ -15,7 +15,6 @@ function Build-Site {
     # Create dist and subfolder
     Write-Host "Creating dist/my-personal-blazor-website structure..." -ForegroundColor Cyan
     New-Item -ItemType Directory -Path "dist" -Force | Out-Null
-    New-Item -ItemType Directory -Path "dist\my-personal-blazor-website" -Force | Out-Null
 
     # Fast move published wwwroot into subfolder
     Write-Host "Moving wwwroot to dist/my-personal-blazor-website..." -ForegroundColor Cyan
