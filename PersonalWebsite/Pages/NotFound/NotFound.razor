@@ -155,29 +155,36 @@ else
 
         var normalizedInput = Normalize(input);
 
-        // Prefix matches
-        var prefixMatches = routes
-            .Where(kvp => Normalize(kvp.Key).StartsWith(normalizedInput))
-            .Select(kvp => (
-                Title: routeTitles.TryGetValue(kvp.Key, out var title) ? title : kvp.Key,
-                Path: kvp.Value))
+        // Substring (contains) matches
+        var containsMatches = routes
+            .Select(kvp => new
+            {
+                Key = kvp.Key,
+                Path = kvp.Value,
+                NormalizedKey = Normalize(kvp.Key)
+            })
+            .Where(x => x.NormalizedKey.Contains(normalizedInput))
+            .Select(x => (
+                Title: routeTitles.TryGetValue(x.Key, out var title) ? title : x.Key,
+                Path: x.Path))
             .ToList();
 
-        if (prefixMatches.Any())
-            return prefixMatches;
+        if (containsMatches.Any())
+            return containsMatches;
 
-        // Levenshtein matches (top 3)
+        // Levenshtein fallback (top 3)
         var fuzzyMatches = routes
-            .Select(kvp => new {
-                kvp.Key,
-                kvp.Value,
-                distance = LevenshteinDistance(normalizedInput, Normalize(kvp.Key))
+            .Select(kvp => new
+            {
+                Key = kvp.Key,
+                Path = kvp.Value,
+                Distance = LevenshteinDistance(normalizedInput, Normalize(kvp.Key))
             })
-            .OrderBy(x => x.distance)
+            .OrderBy(x => x.Distance)
             .Take(3)
             .Select(x => (
                 Title: routeTitles.TryGetValue(x.Key, out var title) ? title : x.Key,
-                Path: x.Value))
+                Path: x.Path))
             .ToList();
 
         return fuzzyMatches;
