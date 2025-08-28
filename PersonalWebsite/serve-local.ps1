@@ -12,13 +12,25 @@ function Build-Site {
         cmd /c "rd dist /s /q"
     }
 
+    $publishedRoot = "publish-temp\wwwroot"
+    if (-Not (Test-Path $publishedRoot)) {
+        Write-Host "$publishedRoot not found!" -ForegroundColor Red
+        exit 2
+    }
+
     # Create dist and subfolder
-    Write-Host "Creating dist/my-personal-blazor-website structure..." -ForegroundColor Cyan
+    Write-Host "Creating dist folder..." -ForegroundColor Cyan
     New-Item -ItemType Directory -Path "dist" -Force | Out-Null
 
     # Fast move published wwwroot into subfolder
-    Write-Host "Moving wwwroot to dist/my-personal-blazor-website..." -ForegroundColor Cyan
-    cmd /c "move publish-temp\wwwroot dist\my-personal-blazor-website"
+    $distWebSite = "dist\my-personal-blazor-website"
+    Write-Host "Moving wwwroot to dist as my-personal-blazor-website..." -ForegroundColor Cyan
+    cmd /c "move publish-temp\wwwroot $distWebSite"
+
+    if (-Not (Test-Path $distWebSite)) {
+        Write-Host "$distWebSite not found!" -ForegroundColor Red
+        exit 2
+    }
 
     # Clean up publish-temp
     Write-Host "Cleaning up publish-temp..." -ForegroundColor Yellow

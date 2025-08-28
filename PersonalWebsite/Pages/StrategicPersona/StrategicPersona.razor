@@ -1,0 +1,114 @@
+@page "/strategic-persona"
+@inherits BaseDataPage<StarEntry>
+@using PersonalWebsite.Models
+@using PersonalWebsite.Components
+@using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.StarCard
+@using PersonalWebsite.Components.TextFormatter
+
+<PageTitle>Strategic Engineering Persona</PageTitle>
+
+<div class="container">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+
+    <h1 class="display-4">🧠 Strategic Engineering Persona</h1>
+    <p class="lead">Legacy-aware, risk-driven, and architected for resilience.</p>
+
+    <hr />
+
+    <section class="mb-5">
+        <h2>🎙️ Elevator Pitch</h2>
+        <p>
+            I’m a systems architect who builds invisible reliability. From SCADA integration at Texaco to ATCM governance at Accruent, I’ve engineered infrastructure that survives audits, outages, and handoffs...
+        </p>
+    </section>
+
+    <section class="mb-5">
+        <h2>🧠 Strategic Questions I Ask in Interviews</h2>
+        <ul>
+            <li>How does your team quantify infrastructure risk across OT systems?</li>
+            <li>What tooling enforces change governance and rollback planning?</li>
+            <li>How are emergency changes handled during blackout periods?</li>
+            <li>Is there opportunity to mentor engineers in risk-aware development practices?</li>
+            <li>How does your organization preserve engineering wisdom across handoffs?</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2>🖼️ Visual Overlays & Diagrams (Coming Soon)</h2>
+        <ul>
+            <li><strong>Mission Control Dashboard:</strong> Fault isolation and telemetry recovery interface</li>
+            <li><strong>RPN Scoring Flow:</strong> Severity × Occurrence × Detection matrix with mitigation triggers</li>
+            <li><strong>GitFlow Enforcement:</strong> Merge gating and ticket traceability diagram</li>
+            <li><strong>Legacy-to-Modern Bridge:</strong> Texaco telemetry → React overlays architecture</li>
+        </ul>
+        <p class="text-muted">Visuals will be added as interactive components or downloadable assets.</p>
+    </section>
+
+    <section class="mb-5">
+        <h2>⭐ STAR Interview Responses</h2>
+
+        @if (Items == null)
+        {
+            <p class="text-muted text-center">Loading STAR responses...</p>
+        }
+        else
+        {
+            <div class="text-center mb-4">
+                <label for="tagFilter" class="fw-bold me-2">Filter by Tag:</label>
+                <select id="tagFilter" class="form-select w-auto d-inline-block" @onchange="OnTagChanged">
+                    <option value="">All</option>
+                    @foreach (var tag in AllTags)
+                    {
+                        <option value="@tag.Name">@tag.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="row justify-content-center">
+                @if (FilteredEntries != null)
+                {
+                    @foreach (var entry in FilteredEntries)
+                    {
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <StarCard Entry="@entry" />
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </section>
+</div>
+
+@code {
+    protected override string FilePath => "Pages/StrategicPersona/StrategicPersona.razor";
+
+    private List<StarTag> AllTags = new();
+    private string SelectedTag = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        try
+        {
+            await LoadDataAsync("data/starData.json");
+            AllTags = await Http.GetFromJsonAsync<List<StarTag>>("data/starTags.json") ?? new();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error loading STAR data: {ex.Message}");
+        }
+    }
+
+    private IEnumerable<StarEntry>? FilteredEntries =>
+        string.IsNullOrEmpty(SelectedTag)
+            ? Items
+            : Items?.Where(e => e.Tags.Contains(SelectedTag));
+
+    private void OnTagChanged(ChangeEventArgs e)
+    {
+        SelectedTag = e.Value?.ToString() ?? "";
+    }
+}

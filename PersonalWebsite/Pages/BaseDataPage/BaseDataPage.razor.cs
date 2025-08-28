@@ -1,8 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System.Net.Http;
-using System.Threading.Tasks;
-
 
 public class BaseDataPage<TItem> : BasePage
 {
@@ -19,7 +15,12 @@ public class BaseDataPage<TItem> : BasePage
     // Example method to load data dynamically (override this in derived classes)
     protected async virtual Task<List<TItem>?> LoadItemsAsync(string dataPath)
     {
+        LogMessage($"Loading JSON file:\n{dataPath} ...");
+
         var response = await Http.GetStringAsync(dataPath);
+
+        LogMessage($"Loading JSON file:\n{dataPath} ... Done.");
+        LogMessage($"JSON:\n{response}");
 
         return System.Text.Json.JsonSerializer.Deserialize<List<TItem>>(response);
     }

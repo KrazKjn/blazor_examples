@@ -1,0 +1,216 @@
+@inject NavigationManager Navigation
+@using PersonalWebsite.Components
+@using PersonalWebsite.Models
+@inherits BaseDataPage<Announcement>
+
+<div class="announcement-container @(isExpanded ? "expanded" : "collapsed")" @onclick="Toggle">
+    <div class="announcement-wrapper">
+        <strong class="announcement-header">What's New</strong>
+
+        @if (isExpanded)
+        {
+            <div class="carousel-wrapper">
+                @if (Items?.Any() == true)
+                {
+                    <div id="carousel" @onmouseover="PauseRotation" @onmouseout="ResumeRotation">
+                        <div class="carousel-track" style=@($"transform: translateX(-{currentIndex * 100}%)")>
+                            @foreach (var announcement in Items)
+                            {
+                                <div class="carousel-slide">
+                                    <p><strong>@($"{Items.IndexOf(announcement) + 1}/{Items.Count}: {announcement.Title}")</strong></p>
+                                    <p>@announcement.Message</p>
+                                    <a href="javascript:void(0)" @onclick="@(() => Navigate(announcement.LinkTarget))">@announcement.LinkText</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="carousel-indicators">
+                        @for (int i = 0; i < Items.Count; i++)
+                        {
+                            <span class="indicator-dot @(i == currentIndex ? "active" : "")"></span>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>No announcements available.</p>
+                }
+            </div>
+
+            <div class="carousel-controls">
+                <button @onclick:stopPropagation="true" @onclick="PreviousSlide">‹</button>
+                <button @onclick:stopPropagation="true" @onclick="NextSlide">›</button>
+            </div>
+        }
+    </div>
+
+    <div class="announcement-link">
+        <a href="@HREF" target="_blank">@Target</a>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? HREF { get; set; }
+    [Parameter] public string? Target { get; set; }
+    protected override string FilePath => "Components/AnnouncementBanner/AnnouncementBanner.razor";
+    private bool isExpanded = true;
+    private System.Timers.Timer? collapseTimer;
+    private int currentIndex = -1;
+    private int lastShown = -1;
+	private DateTime lastShownTime = new();
+    private bool isPaused = false;
+    private System.Timers.Timer? rotationTimer;
+    private DotNetObjectReference<AnnouncementBanner>? objRef;
+
+    protected async override void OnInitialized()
+    {
+        try
+        {
+            await LogToConsole("Loading announcements...");
+            await LoadDataAsync("data/announcements.json");
+            await LogToConsole("Loading announcements... done.");
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (ArgumentException ex)
+        {
+            await LogToConsole($"Error loading announcements: {ex.Message}");
+            Console.WriteLine($"Error loading announcements: {ex.Message}");
+        }
+
+        if (Items?.Count > 1)
+        {
+            int showSlideMs = 5000;
+            // Use first announcement's AutoCollapseMs if available
+            var collapseMs = Items?.FirstOrDefault()?.AutoCollapseMs ?? 0;
+            if (collapseMs < showSlideMs * Items!.Count)
+            {
+                collapseMs = showSlideMs * Items!.Count;
+            }
+            collapseMs += 1000;
+
+            await LogToConsole($"Creating Rotation Timer {showSlideMs} ms ...");
+            rotationTimer = new System.Timers.Timer(showSlideMs); // rotate every 5s
+            currentIndex++; // Set the next item. First is already displayed.
+			lastShownTime = DateTime.Now;
+            rotationTimer.Elapsed += async (_, _) =>
+            {
+                currentIndex = (currentIndex + 1) % Items.Count;
+				TimeSpan timeElapsed = DateTime.Now - lastShownTime;
+                await LogToConsole($"Rotation Timer Fired. currentIndex is {currentIndex}, Displayed Time {timeElapsed.ToString(@"hh\:mm\:ss")} ...");
+				lastShownTime = DateTime.Now;
+                await InvokeAsync(StateHasChanged);
+                if (currentIndex > lastShown)
+                {
+                    lastShown = currentIndex;
+                }
+            };
+            await LogToConsole("Creating Rotation Timer ... Done.");
+
+            if (collapseMs > 0)
+            {
+                await LogToConsole($"Creating Collapse Timer {collapseMs} ms...");
+                collapseTimer = new System.Timers.Timer(collapseMs);
+                collapseTimer.Elapsed += async (_, _) => 
+                {
+                    if (lastShown >=  (Items.Count - 1))
+                    {
+                        rotationTimer.Stop();
+                        isExpanded = false;
+                        await LogToConsole($"Collapse Timer Fired. Collapsing ...");
+                        await InvokeAsync(StateHasChanged);
+                    }
+                    else
+                    {
+                        collapseTimer.Interval = showSlideMs;
+                    }
+                    //collapseTimer?.Dispose();
+                };
+                await LogToConsole("Starting Rotation Timer ...");
+                rotationTimer.Start();
+                await LogToConsole("Starting Rotation Timer ... Done.");
+                await LogToConsole($"Starting Collapse Timer...");
+                collapseTimer.Start();
+                await LogToConsole("Starting Collapse Timer ... Done.");
+            }
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async void Toggle()
+    {
+        isExpanded = !isExpanded;
+
+        if (Items != null && isExpanded && Items?.FirstOrDefault()?.AutoCollapseMs > 0)
+        {
+            currentIndex = 0;
+            lastShown = -1;
+			lastShownTime = DateTime.Now;
+            await LogToConsole($"Invoking State Change. currentIndex is {currentIndex} ...");
+            await InvokeAsync(StateHasChanged);
+            await LogToConsole("Starting Rotation Timer ...");
+            rotationTimer?.Start();
+            await LogToConsole("Starting Rotation Timer ... Done.");
+            await LogToConsole($"Starting Collapse Timer ...");
+            collapseTimer?.Start();
+            await LogToConsole("Starting Collapse Timer ... Done.");
+        } else if (!isExpanded)
+        {
+            rotationTimer?.Stop();
+            collapseTimer?.Stop();
+        }
+    }
+
+    private void PreviousSlide() =>
+        currentIndex = (currentIndex - 1 + Items!.Count) % Items!.Count;
+
+    private void NextSlide() =>
+        currentIndex = (currentIndex + 1) % Items!.Count;
+
+    private void PauseRotation()
+    {
+        isPaused = true;
+        rotationTimer?.Stop();
+    }
+
+    private void ResumeRotation()
+    {
+        isPaused = false;
+        rotationTimer?.Start();
+    }
+
+    private void Navigate(string target) => Navigation.NavigateTo(target);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LogToConsole("getting objRef ...");
+            objRef = DotNetObjectReference.Create(this);
+            await LogToConsole("enableSwipeWithInstance ...");
+            await JSRuntime!.InvokeVoidAsync("enableSwipeWithInstance", "carousel", objRef);
+            await LogToConsole("enableSwipeWithInstance ... Done.");
+        }
+    }
+
+    [JSInvokable]
+    public Task HandleSwipe(string direction)
+    {
+        if (direction == "left")
+            currentIndex = (currentIndex + 1) % Items!.Count;
+        else if (direction == "right")
+            currentIndex = (currentIndex - 1 + Items!.Count) % Items!.Count;
+
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        collapseTimer?.Stop();
+        collapseTimer?.Dispose();
+        rotationTimer?.Stop();
+        rotationTimer?.Dispose();
+        objRef?.Dispose();
+    }
+}
