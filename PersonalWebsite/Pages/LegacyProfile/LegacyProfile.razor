@@ -2,6 +2,8 @@
 @using PersonalWebsite.Components.GitHubLink
 @using PersonalWebsite.Components.Accordion
 @using PersonalWebsite.Components.CallToAction
+@using PersonalWebsite.Components.PdfModal
+@using PersonalWebsite.Components.PdfLink
 @inherits BasePage
 
 <PageTitle>Legacy Profile</PageTitle>
@@ -74,12 +76,11 @@ boot failures by re-enabling device drivers via Registry hive edits in WinPE</li
     </ul>
   </Accordion>
 
-  <iframe src="files/2025 - Resume - Legacy Technology.pdf" class="pdf-viewer"></iframe>
-  <div class="download-link">
-    <a class="btn btn-primary" href="files/2025 - Resume - Legacy Technology.pdf" target="_blank" rel="noopener noreferrer">
-      📄 Download Legacy Addendum (PDF)
-    </a>
-  </div>
+  <PdfLink 
+      FilePath="files/2025 - Resume - Legacy Technology.pdf"
+      Title="Infrastructure Legacy Systems Engineering Addendum"
+      LinkText="📄 Infrastructure Legacy Systems Engineering Addendum (PDF)"
+      PdfModal="@pdfModalLegacySysEngTexaco" />            
   <p class="mt-4">
     For more details on the IT Works system management platform, visit the <a href="it-works">IT Works page</a>.
   </p>
@@ -87,8 +88,11 @@ boot failures by re-enabling device drivers via Registry hive edits in WinPE</li
     Description="Let’s discuss how we can stabilize and enhance your infrastructure with proven strategies." 
     ButtonText="Contact Me" 
     ButtonLink="mailto:%ContactEmail%?subject=Legacy%20Systems%20Inquiry" />
+  <PdfModal @ref="pdfModalLegacySysEngTexaco" />
 </article>
 
 @code {
     protected override string FilePath => "Pages/LegacyProfile/LegacyProfile.razor";
+
+    private PdfModal? pdfModalLegacySysEngTexaco;
 }

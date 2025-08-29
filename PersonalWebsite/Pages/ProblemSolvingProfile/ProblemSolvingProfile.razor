@@ -1,5 +1,7 @@
 @page "/problem-solving-profile"
 @using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.PdfModal
+@using PersonalWebsite.Components.PdfLink
 @inherits BaseDataPage<ProblemSolvingStory>
 
 <h2 class="page-title text-center mt-4">🛠️ Problem Solving Profile</h2>
@@ -42,17 +44,19 @@ else
 {
     <p class="text-center text-muted">Loading stories or no data available...</p>
 }
-  <iframe src="files/2025 - Resume - Problem Solving Portfolio.pdf" class="pdf-viewer"></iframe>
-  <div class="download-link">
-    <a class="btn btn-primary" href="files/2025 - Resume - Problem Solving Portfolio.pdf" target="_blank" rel="noopener noreferrer">
-      📄 Download Problem Solving Portfolio (PDF)
-    </a>
-  </div>
+  <PdfLink 
+      FilePath="files/2025 - Resume - Problem Solving Portfolio.pdf"
+      Title="Problem Solving Portfolio (PDF)"
+      LinkText="📄 Problem Solving Portfolio (PDF)"
+      PdfModal="@pdfModalProblemSolvingPortfolio" />            
+
+  <PdfModal @ref="pdfModalProblemSolvingPortfolio" />
 
 @code {
     protected override string FilePath => "Pages/ProblemSolvingProfile/ProblemSolvingProfile.razor";
     private List<ProblemSolvingStory> allStories = new();
     private string sortOrder = "importance";
+    private PdfModal? pdfModalProblemSolvingPortfolio;
 
     protected override async Task OnInitializedAsync()
     {

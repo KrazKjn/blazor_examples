@@ -1,5 +1,7 @@
 @page "/legacy-engineering-texaco"
 @using PersonalWebsite.Components.GitHubLink
+@using PersonalWebsite.Components.PdfModal
+@using PersonalWebsite.Components.PdfLink
 @inherits BasePage
 
 <PageTitle>Strategic Systems Engineering at Texaco</PageTitle>
@@ -14,10 +16,12 @@
         Each solution reflects a mindset of strategic reuse, operational resilience, and technical empathy. From restoring telemetry across decommissioned systems to building a live management console for domain oversight, these stories demonstrate the depth and clarity I bring to every challenge.
     </p>
     <p>
-        <div class="download-link">
-            <a class="btn btn-primary" href="files/2025 - Strategic Systems Engineering Texaco.pdf" target="_blank" rel="noopener noreferrer">
-            📄 Download the full Article (PDF)
-            </a>
+        <div>
+            <PdfLink 
+                FilePath="files/2025 - Strategic Systems Engineering Texaco.pdf"
+                Title="Strategic Systems Engineering at Texaco"
+                LinkText="📄 Strategic Systems Engineering at Texaco (PDF)"
+                PdfModal="@pdfModalSysEngTexacoPDF" />            
         </div>
         <div class="download-link">
             <a class="btn btn-primary" href="https://www.linkedin.com/pulse/strategic-systems-engineering-texaco-legacy-resilience-mark-hogan-6rltc/?trackingId=o5M%2BFy2%2BRCehp1ErmJy9QQ%3D%3D" target="_blank" rel="noopener noreferrer">
@@ -25,8 +29,11 @@
             </a>
         </div>
     </p>
+    <PdfModal @ref="pdfModalSysEngTexacoPDF" />
 </div>
 
 @code {
     protected override string FilePath => "Pages/LegacyEngineering/LegacyEngineering.razor";
+
+    private PdfModal? pdfModalSysEngTexacoPDF;
 }

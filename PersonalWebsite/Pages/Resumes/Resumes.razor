@@ -1,4 +1,6 @@
 @page "/resumes"
+@using PersonalWebsite.Components.PdfModal
+@using PersonalWebsite.Components.PdfLink
 @using PersonalWebsite.Components.GitHubLink
 @inherits BasePage
 
@@ -10,28 +12,45 @@
     <p>Select a resume to view:</p>
     <ul>
         <li>
-            <NavLink class="nav-link" href="resume-engineer">
-                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Engineer Resume
-            </NavLink>
+            <PdfLink 
+                FilePath="files/2025 - Resume - Engineer - Full.pdf"
+                Title="Engineer Resume"
+                LinkText="📄 Engineer Resume (PDF)"
+                PdfModal="@pdfModalEngineerResume" />
         </li>
         <li>
-            <NavLink class="nav-link" href="resume-architect">
-                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Architect Resume
-            </NavLink>
+            <PdfLink 
+                FilePath="files/2025 - Resume - Architect - Full.pdf"
+                Title="Architect Resume"
+                LinkText="📄 Architect Resume (PDF)"
+                PdfModal="@pdfModalArchitectResume" />
         </li>
         <li>
-            <NavLink class="nav-link" href="resume-manager">
-                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Manager Resume
-            </NavLink>
+            <PdfLink 
+                FilePath="files/2025 - Resume - Manager - Full.pdf"
+                Title="Manager Resume"
+                LinkText="📄 Manager Resume (PDF)"
+                PdfModal="@pdfModalManagerResume" />
         </li>
         <li>
-            <NavLink class="nav-link" href="infrastructure-legacy-systems-engineering-addendumlegacy-profile-document">
-                <span class="bi bi-journal-text-nav-menu" aria-hidden="true"></span> Infrastructure Legacy Systems Engineering Addendum
-            </NavLink>
+            <PdfLink 
+                FilePath="files/2025 - Resume - Legacy Technology.pdf"
+                Title="Infrastructure Legacy Systems Engineering Addendum"
+                LinkText="📄 Infrastructure Legacy Systems Engineering Addendum (PDF)"
+                PdfModal="@pdfModalLegacySysEngTexaco" />            
         </li>
     </ul>
+    <PdfModal @ref="pdfModalEngineerResume" />
+    <PdfModal @ref="pdfModalArchitectResume" />
+    <PdfModal @ref="pdfModalManagerResume" />
+    <PdfModal @ref="pdfModalLegacySysEngTexaco" />
 </div>
 
 @code {
     protected override string FilePath => "Pages/Resumes/Resumes.razor";
+
+    private PdfModal? pdfModalEngineerResume;
+    private PdfModal? pdfModalArchitectResume;
+    private PdfModal? pdfModalManagerResume;
+    private PdfModal? pdfModalLegacySysEngTexaco;
 }

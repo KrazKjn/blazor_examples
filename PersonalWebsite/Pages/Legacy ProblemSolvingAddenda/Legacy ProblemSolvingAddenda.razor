@@ -1,0 +1,38 @@
+@page "/legacy-problem-solving-addenda"
+@using PersonalWebsite.Components.PdfModal
+@using PersonalWebsite.Components.PdfLink
+@using PersonalWebsite.Components.GitHubLink
+@inherits BasePage
+
+<PageTitle>Legacy & Problem Solving Addenda</PageTitle>
+
+<div class="container py-4">
+    <GitHubLink FullURL="@GitHubLinkUrl" />
+    <h1 class="mb-3">Legacy & Problem Solving Addenda</h1>
+    <p>Download or view supplemental documents related to legacy systems engineering and problem solving profiles.</p>
+    <ul>
+        <li>  
+            <PdfLink 
+                FilePath="files/2025 - Resume - Legacy Technology.pdf"
+                Title="Infrastructure Legacy Systems Engineering Addendum"
+                LinkText="📄 Infrastructure Legacy Systems Engineering Addendum (PDF)"
+                PdfModal="@pdfModalLegacySysEngTexaco" />            
+        </li>
+        <li>
+            <PdfLink 
+                FilePath="files/2025 - Resume - Problem Solving Portfolio.pdf"
+                Title="Problem Solving Profile"
+                LinkText="📄 Problem Solving Profile (PDF)"
+                PdfModal="@pdfModalProblemSolvingProfile" />            
+        </li>
+    </ul>
+    <PdfModal @ref="pdfModalLegacySysEngTexaco" />
+    <PdfModal @ref="pdfModalProblemSolvingProfile" />
+</div>
+
+@code {
+    protected override string FilePath => "Pages/LegacyProfileDocument/LegacyProfileDocument.razor";
+
+    private PdfModal? pdfModalLegacySysEngTexaco;
+    private PdfModal? pdfModalProblemSolvingProfile;
+}

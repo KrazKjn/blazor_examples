@@ -2,9 +2,52 @@ param (
     [string]$mode = "default"
 )
 
-function Build-Site {
+function Update-Version {
+    $csprojPath = ".\PersonalWebsite.csproj"
+    if (-Not (Test-Path $csprojPath)) {
+        Write-Host "Project file not found: $csprojPath" -ForegroundColor Red
+        exit 1
+    }
+
+    [xml]$xml = Get-Content $csprojPath
+    $ns = @{msb = "http://schemas.microsoft.com/developer/msbuild/2003"}
+
+    $versionNode = $xml.Project.PropertyGroup.Version
+    if (-Not $versionNode) {
+        Write-Host "No <Version> tag found in $csprojPath" -ForegroundColor Red
+        exit 1
+    }
+
+    $currentVersion = $versionNode[0]
+    Write-Host "Current version: $currentVersion" -ForegroundColor Yellow
+
+    $parts = $currentVersion.Split('.')
+    if ($parts.Count -ne 4) {
+        Write-Host "Version format must be Major.Minor.Build.Revision (e.g., 2.0.0.0)" -ForegroundColor Red
+        exit 1
+    }
+
+    $parts[3] = [int]$parts[3] + 1
+    $newVersion = "$($parts[0]).$($parts[1]).$($parts[2]).$($parts[3])"
+
+    # Update all version fields
+    $xml.SelectSingleNode("//Version").InnerText = $newVersion
+    $xml.SelectSingleNode("//AssemblyVersion").InnerText = $newVersion
+    $xml.SelectSingleNode("//FileVersion").InnerText = $newVersion
+
+    $fullPath = (Resolve-Path $csprojPath).Path
+    $xml.Save($fullPath)
+    Write-Host "Updated version to: $newVersion" -ForegroundColor Green
+}
+
+function Publish-Site {
     Write-Host "Publishing Blazor WebAssembly app..." -ForegroundColor Cyan
-    dotnet publish .\PersonalWebsite.csproj -c Release -o publish-temp
+    dotnet publish .\PersonalWebsite.csproj -c Release
+}
+
+function Build-Site {
+    Write-Host "Building Blazor WebAssembly app (Local Testing)..." -ForegroundColor Cyan
+    dotnet build .\PersonalWebsite.csproj -c Release -o publish-temp
 
     # Fast delete dist folder
     if (Test-Path "dist") {
@@ -63,6 +106,10 @@ switch ($mode.ToLower()) {
     }
     "run" {
         Run-Server
+    }
+    "publish" {
+        Update-Version
+        Publish-Site
     }
     default {
         Build-Site
