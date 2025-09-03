@@ -58,7 +58,6 @@
     private int currentIndex = -1;
     private int lastShown = -1;
 	private DateTime lastShownTime = new();
-    private bool isPaused = false;
     private System.Timers.Timer? rotationTimer;
     private DotNetObjectReference<AnnouncementBanner>? objRef;
 
@@ -92,6 +91,7 @@
             rotationTimer = new System.Timers.Timer(showSlideMs); // rotate every 5s
             currentIndex++; // Set the next item. First is already displayed.
 			lastShownTime = DateTime.Now;
+            await ScrollToTopAsync();
             rotationTimer.Elapsed += async (_, _) =>
             {
                 currentIndex = (currentIndex + 1) % Items.Count;
@@ -123,7 +123,6 @@
                     {
                         collapseTimer.Interval = showSlideMs;
                     }
-                    //collapseTimer?.Dispose();
                 };
                 await LogToConsole("Starting Rotation Timer ...");
                 rotationTimer.Start();
@@ -143,6 +142,7 @@
 
         if (Items != null && isExpanded && Items?.FirstOrDefault()?.AutoCollapseMs > 0)
         {
+            await ScrollToTopAsync();
             currentIndex = 0;
             lastShown = -1;
 			lastShownTime = DateTime.Now;
@@ -169,13 +169,11 @@
 
     private void PauseRotation()
     {
-        isPaused = true;
         rotationTimer?.Stop();
     }
 
     private void ResumeRotation()
     {
-        isPaused = false;
         rotationTimer?.Start();
     }
 

@@ -1,18 +1,18 @@
 @using Models
 
 @code {
-    [Parameter] public StarEntry Entry { get; set; }
+    [Parameter] public StarEntry? Entry { get; set; }
     private bool showDetails = false;
 }
 
 <div class="card shared-card mb-3 shadow-sm">
     <div class="card-body">
-        <h5 class="card-title">⭐@Entry.Title</h5>
-        <p class="card-meta"><strong>Category:</strong> @Entry.Category</p>
-        <p class="card-text"><strong>Summary:</strong> @Entry.Result</p>
+        <h5 class="card-title">⭐@Entry?.Title</h5>
+        <p class="card-meta"><strong>Category:</strong> @Entry?.Category</p>
+        <p class="card-text"><strong>Summary:</strong> @Entry?.Result</p>
 
         <div class="card-tags mt-2">
-            @foreach (var tag in Entry.Tags)
+            @foreach (var tag in Entry?.Tags ?? Enumerable.Empty<string>())
             {
                 <span class="tag-badge">@tag</span>
             }
@@ -25,24 +25,24 @@
         @if (showDetails)
         {
             <div class="card-details mt-3">
-                <p><strong>Situation:</strong> @Entry.Situation</p>
-                <p><strong>Task:</strong> @Entry.Task</p>
-                <p><strong>Action:</strong> @Entry.Action</p>
-                <p><strong>Result:</strong> @Entry.Result</p>
+                <p><strong>Situation:</strong> @Entry?.Situation</p>
+                <p><strong>Task:</strong> @Entry?.Task</p>
+                <p><strong>Action:</strong> @Entry?.Action</p>
+                <p><strong>Result:</strong> @Entry?.Result</p>
 
                 <p><strong>Strategic Impact:</strong></p>
                 <ul class="impact-list">
-                    @foreach (var impact in Entry.StrategicImpact)
+                    @foreach (var impact in Entry?.StrategicImpact ?? Enumerable.Empty<string>())
                     {
                         <li>@impact</li>
                     }
                 </ul>
 
-                @if (Entry.WhyThisWorks?.Any() == true)
+                @if (Entry?.WhyThisWorks?.Any() == true)
                 {
                     <p class="mt-3"><strong>🎯 Why This Works:</strong></p>
                     <ul class="why-this-works-list">
-                        @foreach (var reason in Entry.WhyThisWorks)
+                        @foreach (var reason in Entry?.WhyThisWorks ?? Enumerable.Empty<string>())
                         {
                             <li>@reason</li>
                         }

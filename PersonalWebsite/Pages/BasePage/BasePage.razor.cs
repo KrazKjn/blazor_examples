@@ -64,7 +64,8 @@ public class BasePage : ComponentBase
                 {
                     configJson = await System.IO.File.ReadAllTextAsync("/data/siteconfig.json");
                     await LogToConsole("Loaded: /data/siteconfig.json");
-                } catch { }
+                }
+                catch { }
             }
             if (string.IsNullOrEmpty(configJson))
             {
@@ -148,4 +149,14 @@ public class BasePage : ComponentBase
 
     protected async Task LogToConsole(string message) =>
             await JSRuntime!.InvokeVoidAsync("consoleLogger.log", $"[{GetType().Name}] {message}");
+
+    protected async Task ScrollToTopAsync()
+    {
+        await JSRuntime!.InvokeVoidAsync("scrollToTop");
+    }
+
+    protected async Task ScrollElementIntoView(string id)
+    {
+        await JSRuntime!.InvokeVoidAsync("scrollElementIntoView", id);
+    }
 }
