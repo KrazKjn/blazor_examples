@@ -46,38 +46,30 @@ function Publish-Site {
 }
 
 function Build-Site {
-    Write-Host "Building Blazor WebAssembly app (Local Testing)..." -ForegroundColor Cyan
-    dotnet build .\PersonalWebsite.csproj -c Release -o publish-temp
-
     # Fast delete dist folder
     if (Test-Path "dist") {
         Write-Host "Removing existing dist folder..." -ForegroundColor Yellow
         cmd /c "rd dist /s /q"
     }
 
-    $publishedRoot = "publish-temp\wwwroot"
+    Write-Host "Building Blazor WebAssembly app (Local Testing)..." -ForegroundColor Cyan
+    dotnet publish .\PersonalWebsite.csproj -c Release -o dist
+
+    $publishedRoot = "dist\wwwroot"
     if (-Not (Test-Path $publishedRoot)) {
         Write-Host "$publishedRoot not found!" -ForegroundColor Red
         exit 2
     }
 
-    # Create dist and subfolder
-    Write-Host "Creating dist folder..." -ForegroundColor Cyan
-    New-Item -ItemType Directory -Path "dist" -Force | Out-Null
-
     # Fast move published wwwroot into subfolder
     $distWebSite = "dist\my-personal-blazor-website"
     Write-Host "Moving wwwroot to dist as my-personal-blazor-website..." -ForegroundColor Cyan
-    cmd /c "move publish-temp\wwwroot $distWebSite"
+    cmd /c "move dist\wwwroot $distWebSite"
 
     if (-Not (Test-Path $distWebSite)) {
         Write-Host "$distWebSite not found!" -ForegroundColor Red
         exit 2
     }
-
-    # Clean up publish-temp
-    Write-Host "Cleaning up publish-temp..." -ForegroundColor Yellow
-    cmd /c "rd publish-temp /s /q"
 }
 
 function Run-Server {

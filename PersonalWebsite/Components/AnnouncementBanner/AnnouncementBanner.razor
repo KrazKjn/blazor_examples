@@ -61,8 +61,18 @@
     private System.Timers.Timer? rotationTimer;
     private DotNetObjectReference<AnnouncementBanner>? objRef;
 
+    private bool IsHomePage => Navigation.Uri.EndsWith("/") || Navigation.Uri.EndsWith("/index");
+    //private bool IsHomePage => Navigation.ToBaseRelativePath(Navigation.Uri) == "";
+
     protected async override void OnInitialized()
     {
+        Navigation.LocationChanged += HandleLocationChanged;
+        if (!IsHomePage)
+        {
+            isExpanded = false;
+            await base.OnInitializedAsync();
+            return;
+        }
         try
         {
             await LogToConsole("Loading announcements...");
@@ -136,6 +146,17 @@
         await base.OnInitializedAsync();
     }
 
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (!IsHomePage && isExpanded)
+        {
+            isExpanded = false;
+            rotationTimer?.Stop();
+            collapseTimer?.Stop();
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
     private async void Toggle()
     {
         isExpanded = !isExpanded;
@@ -154,7 +175,8 @@
             await LogToConsole($"Starting Collapse Timer ...");
             collapseTimer?.Start();
             await LogToConsole("Starting Collapse Timer ... Done.");
-        } else if (!isExpanded)
+        }
+        else if (!isExpanded)
         {
             rotationTimer?.Stop();
             collapseTimer?.Stop();
@@ -205,6 +227,7 @@
 
     public void Dispose()
     {
+        Navigation.LocationChanged -= HandleLocationChanged;
         collapseTimer?.Stop();
         collapseTimer?.Dispose();
         rotationTimer?.Stop();
